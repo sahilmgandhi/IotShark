@@ -1,42 +1,35 @@
 This is BibTeX, Version 0.99d (TeX Live 2018)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: sahil_max_daniel_report.aux
-The style file: ACM-Reference-Format.bst
+The style file: plain.bst
 I found no \citation commands---while reading file sahil_max_daniel_report.aux
-Reallocated singl_function (elt_size=4) to 100 items from 50.
-Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-Database file #1: sample-base.bib
-Reallocated singl_function (elt_size=4) to 100 items from 50.
-Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
-Reallocated global_strs (elt_size=20001) to 20 items from 10.
-Reallocated glb_str_end (elt_size=4) to 20 items from 10.
-Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: sahil_max_daniel_report.bib
 You've used 0 entries,
-            5727 wiz_defined-function locations,
-            1449 strings with 16532 characters,
-and the built_in function-call counts, 105 in all, are:
+            2118 wiz_defined-function locations,
+            496 strings with 4019 characters,
+and the built_in function-call counts, 18 in all, are:
 = -- 0
 > -- 0
 < -- 0
 + -- 0
 - -- 0
 * -- 2
-:= -- 14
+:= -- 7
 add.period$ -- 0
 call.type$ -- 0
 change.case$ -- 0
 chr.to.int$ -- 0
 cite$ -- 0
-duplicate$ -- 1
+duplicate$ -- 0
 empty$ -- 1
 format.name$ -- 0
-if$ -- 2
-int.to.chr$ -- 2
-int.to.str$ -- 1
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
 missing$ -- 0
-newline$ -- 40
+newline$ -- 3
 num.names$ -- 0
-pop$ -- 1
+pop$ -- 0
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
@@ -51,5 +44,5 @@ type$ -- 0
 warning$ -- 0
 while$ -- 0
 width$ -- 0
-write$ -- 39
+write$ -- 2
 (There was 1 error message)

@@ -1,52 +1,68 @@
-\documentclass[sigconf]{acmart}
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix2019_v3}
 
-\makeatletter
-\renewcommand\@formatdoi[1]{\ignorespaces}
-\makeatother
+% to be able to draw some self-contained figs
+\usepackage{tikz}
+\usepackage{amsmath}
 
-\AtBeginDocument{%
-  \providecommand\BibTeX{{%
-    \normalfont B\kern-0.5em{\scshape i\kern-0.25em b}\kern-0.8em\TeX}}}
+% inlined bib file
+\usepackage{filecontents}
 
-\settopmatter{printacmref=false} % Removes citation information below abstract
-\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
-\pagestyle{plain} % removes running headers
-
-\fancyfoot{}
-\begin{document}
-
-\thispagestyle{empty}
-
-\title{DASH: Determine And Secure the House}
-
-\author{Sahil Gandhi}
-\authornote{All authors contributed equally to this research.}
-\author{Max Wang}
-\authornotemark[1]
-\author{Daniel Achee}
-\authornotemark[1]
-\affiliation{%
-\institution{University of California, Los Angeles}
-\city{Los Angeles}
-\state{California}
-\postcode{90095}
+%-------------------------------------------------------------------------------
+\begin{filecontents}{\jobname.bib}
+%-------------------------------------------------------------------------------
+@Book{arpachiDusseau18:osbook,
+  author =       {Arpaci-Dusseau, Remzi H. and Arpaci-Dusseau Andrea C.},
+  title =        {Operating Systems: Three Easy Pieces},
+  publisher =    {Arpaci-Dusseau Books, LLC},
+  year =         2015,
+  edition =      {1.00},
+  note =         {\url{http://pages.cs.wisc.edu/~remzi/OSTEP/}}
 }
-\email{ [sahilmgandhi, yingbowang,dpachee] @cs.ucla.edu}
+@InProceedings{waldspurger02,
+  author =       {Waldspurger, Carl A.},
+  title =        {Memory resource management in {VMware ESX} server},
+  booktitle =    {USENIX Symposium on Operating System Design and
+                  Implementation (OSDI)},
+  year =         2002,
+  pages =        {181--194},
+  note =         {\url{https://www.usenix.org/legacy/event/osdi02/tech/waldspurger/waldspurger.pdf}}}
+\end{filecontents}
 
-\begin{abstract}
-  Lorem Ipsum blah blah 
-\end{abstract}
+%-------------------------------------------------------------------------------
+\begin{document}
+%-------------------------------------------------------------------------------
 
-\ccsdesc[500]{Computer systems organization~Ubiqutious computing}
-\ccsdesc[500]{Computer systems organization~Internet of Things}
+%don't want date printed
+\date{}
 
-\keywords{Internet of Things, Security, Pattern Recognition}
+% make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\Large \bf DASH: Determine And Secure the House}
+
+%for single author (just remove % characters)
+\author{
+{\rm Sahil Gandhi, Max Wang, Daniel Achee}\\
+University of California, Los Angeles
+} % end author
 
 \maketitle
 
-\section{Introduction}
+%-------------------------------------------------------------------------------
+\begin{abstract}
+%-------------------------------------------------------------------------------
+Your abstract text goes here. Just a few facts. Whet our appetites.
+Not more than 200 words, if possible, and preferably closer to 150.
+\end{abstract}
 
-\section{Background and Motivation}
+%-------------------------------------------------------------------------------
+\section{Introduction}
+%-------------------------------------------------------------------------------
+
+
+%-------------------------------------------------------------------------------
+\section{Background and Motivations}
+%-------------------------------------------------------------------------------
+
 In recent years there has been a proliferation of voice assistants in people’s homes. These useful IoT devices provide a convenient voice interface for users, but also present some privacy concerns as they are an always-on listening device. Companies selling these products, such as Amazon, claim that the devices are constantly listening for a keyword, such as Alexa, and only after hearing this keyword, record and process what users say. Therefore, anything a user says before a keyword is issued and after their voice transaction has occurred is not recorded and private. Unfortunately, there is no easy way for a user to verify that the device is upholding public statements and the privacy agreement. Companies do admit that what a user says following this keyword is used for targeting advertisements and customizing content. This creates a conflict of interest as there is a financial incentive for companies to collect more voice data on their users and abuse their agreements.
 
 These devices are relatively new and have emerged due to advances in natural language processing. These advances have allowed for fairly accurate keyword detection at the edge device in real time without the need to send the data to the cloud. With the increased accuracy of natural language processing and the ability to pull more semantic meaning from phrases, these devices are able to provide services that make them attractive to consumers.
@@ -55,7 +71,10 @@ There are many players in the market, with the most popular being Amazon Alexa, 
 
 Given that voice assistants appear to be only expanding in popularity and are projected to be a 7840.82 million dollar market by 2023, it is imperative that users, even those that are not technically sophisticated, can easily audit and understand the behavior of their devices.
 
+%-------------------------------------------------------------------------------
 \section{Related Work}
+%-------------------------------------------------------------------------------
+
 Given that the data being transmitted across IoT devices is encrypted (end-to-end) it is quite difficult to discern what exactly is being transmitted, and even complicated man-in-the-middle style attacks can’t be used since the data payload format and security cert/auth format are unknown to a random attacker. Despite these hindrances, there has been some work in the field by bloggers and researchers to capture the information being transmitted and infer some patterns. 
 
 Blog posts such as [1] and [2] go into great detail for setting up man-in-the-middle style proxies to capture all data being sent across the network by an IoT device (a Google Home and an Amazon Echo respectively for these blogs) and use an application such as Wireshark to sniff packets and determine whether they originated from an IoT device. We use and build off of these techniques to capture data from our own IoT devices during our experiments and for creating our deliverables mentioned below. Furthermore, these blog posts usually capture data for a short duration, minutes or an hour at most, but we wish to extend these investigations further into the tens of hours or several days timeframes.
@@ -65,38 +84,32 @@ Another interesting paper in this space is [4] which aims to classify events in 
 
 Lastly, as more modules (“skills” in the Alexa world) are created, our smart assistants become ever smarter and are able to do more, include such sensitive tasks like writing emails, calling other individuals, and more. The following paper, [5], determines the relative ease with which a hacker can mimic a user and send off malicious requests. Even someone without malicious intents can take advantage of the information and skills of a voice assistant and breach a user’s privacy. Since 2014, when the previous paper was published, Google, Amazon and others have taken the initiative to alert users after their device was accessed (and send a transcript/recording of the voice data) and protect some sensitive information, the casual user is not aware of the repercussions of purchasing/using the device. We hope that our monitoring tool can serve as this “wake-up” call that the smart assistant is a very versatile device that should be treated with the same level of privacy and scrutiny that we treat our laptops/phones and monitoring what it is doing should be easy enough for the common non-technical person to set up on their own.
 
-
+%-------------------------------------------------------------------------------
 \section{System Overview}
+%-------------------------------------------------------------------------------
 
+\subsection{Design}
+%-----------------------------------
+
+%-------------------------------------------------------------------------------
 \section{Evaluation}
+%-------------------------------------------------------------------------------
 
+%-------------------------------------------------------------------------------
 \section{Discussion and Future Work}
+%-------------------------------------------------------------------------------
 
+%-------------------------------------------------------------------------------
 \section{Conclusion}
+%-------------------------------------------------------------------------------
 
-\begin{acks}
+%-------------------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{\jobname}
 
-\end{acks}
-
-%%
-%% The next two lines define the bibliography style to be used, and
-%% the bibliography file.
-\bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-base}
-
-%%
-%% If your work has an appendix, this is the place to put it.
-\appendix
-
-\section{Research Methods}
-
-\subsection{Part One}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-malesuada, quam in pulvinar varius, metus nunc fermentum urna, id
-sollicitudin purus odio sit amet enim. Aliquam ullamcorper eu ipsum
-vel mollis. Curabitur quis dictum nisl. Phasellus vel semper risus, et
-lacinia dolor. Integer ultricies commodo sem nec semper.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{document}
-\endinput
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%  LocalWords:  endnotes includegraphics fread ptr nobj noindent
+%%  LocalWords:  pdflatex acks
