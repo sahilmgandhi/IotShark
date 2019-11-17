@@ -1,3 +1,5 @@
+# Command: python arp_spoofing.py -t target_ip -g gateway_ip
+
 import scapy.all as scapy
 import time
 import argparse
