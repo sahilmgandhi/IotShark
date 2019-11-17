@@ -1,3 +1,6 @@
+# Command: python scan-hosts-scapy.py -t target_ip -g gateway_ip
+# Example: python scan-hosts-scapy.py -t 192.168.0.0/24
+
 import scapy.all as scapy
 import argparse
 

@@ -1,4 +1,6 @@
-# Command: python arp_spoofing.py -t target_ip -g gateway_ip
+# Command: python arp_spoofing-scapy.py -t target_ip -g gateway_ip
+# Example: python arp-spoofing-scapy.py -t 192.168.0.215 -g 192.168.0.1
+# Other demo scripts: https://github.com/mpostument/hacking_tools
 
 import scapy.all as scapy
 import time
