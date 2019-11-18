@@ -1,8 +1,9 @@
-# Command: python scan-hosts-scapy.py -t target_ip -g gateway_ip
+# Command: python scan-hosts-scapy.py -t target_ip_range
 # Example: python scan-hosts-scapy.py -t 192.168.0.0/24
 
 import scapy.all as scapy
 import argparse
+# import socket
 
 
 def get_arguments():
@@ -32,6 +33,7 @@ def print_result(results_list):
     print("----------------------------------------------------")
     for client in results_list:
         print(client["ip"] + "\t\t" + client["mac"])
+        # print(client["ip"] + "\t\t" + client["mac"] + "\t\t" + socket.gethostbyaddr(client["ip"]))
 
 
 options = get_arguments()
