@@ -1,2 +1,4 @@
 scapy==2.4.3
 Flask==1.1.1
+Jinja2==2.10.3
+matplotlib==3.1.1
