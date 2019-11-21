@@ -55,29 +55,51 @@ class SessionInformation:
 
 # Start capturing data
 capture = pyshark.LiveCapture(
-    interface='en0')
+    interface='en0')  # , include_raw=True, use_json=True)
 capture.set_debug()
 capture.sniff(timeout=5)
 
 for packet in capture:
     # print(captures.ip.field_names)
-    if 'IP' in packet and 'TCP' in packet and 'HTTP' in packet:
-        if packet.ip.dst == device_ip_address or packet.ip.src == device_ip_address:
-            print(i)
-            i += 1
-            # print(bytearray.fromhex(packet.tcp.payload).decode())
-            print('The src port is ' + packet.tcp.srcport)
-            print('The dest port is ' + packet.tcp.dstport)
-            print("The payload is : " + str(packet.http))
+    # if 'IP' in packet and 'TCP' in packet and 'HTTP' in packet:
+    #     if packet.ip.dst == device_ip_address or packet.ip.src == device_ip_address:
+    print(i)
+    i += 1
+    # print(bytearray.fromhex(packet.tcp.payload).decode())
+    # print('The src port is ' + packet.tcp.srcport)
+    # print('The dest port is ' + packet.tcp.dstport)
+    # print("The payload is : " + str(packet.http))
 
-            # if packet.tcp.srcport == 80 or packet.tcp.dstport == 80:
-            # print(packet.tcp.data)
+    # if packet.tcp.srcport == 80 or packet.tcp.dstport == 80:
+    # print(packet.tcp.data)
 
-        # out_file = open("Eavesdrop_Data.txt", "w")
-        # out_string += "Packet #         " + str(i)
-        # out_string += "\n"
-        # out_string += str(packet)
-        # out_string += "\n"
-        # out_file.write(out_string)
+    out_file = open("Eavesdrop_Data.txt", "w")
+    out_string += "Packet #         " + str(i)
+    out_string += "\n"
+    out_string += str(packet)
+    out_string += "\n"
+    out_file.write(out_string)
+
+    """
+    if 'TCP' in packet:
+        # if hasattr(packet.tcp, "payload"):
+        #     print(packet.tcp.payload)
+        if hasattr(packet.tcp, "segment_data"):
+            print("Segment data is " + packet.tcp.segment_data)
+            print(
+                f"Segment data size in bytes is {len(packet.tcp.segment_data)}")
+
+        # payload, time_relative, time_delta, srcport, port, dstport, options, option_len
+        # segment_data, window_size, window_size_value, len, analysis_push_bytes_sent
+        # hdr_len, options_timestamp
+    """
+    if 'UDP' in packet:
+        print("UDP received")
+        print(dir(packet.udp))
+
+        """
+            layer_name, port, dstport, srcport,
+            length, time_delta, 
+        """
 
 capture.close()
