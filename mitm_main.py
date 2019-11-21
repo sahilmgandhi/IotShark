@@ -1,5 +1,6 @@
 from ArpSpoofing import ArpSpoofing
 from DiscoverHosts import select_device
+from PySharkCapture import PySharkCapture
 import argparse
 import os
 import sys
@@ -16,6 +17,7 @@ Use cases:
     sudo python mitm_main.py
 """
 
+
 def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--target", dest="target",
@@ -26,6 +28,7 @@ def get_arguments():
                         help="Subnet mask for scanning hosts")
     options = parser.parse_args()
     return options
+
 
 if (os.geteuid() != 0):
     print("Root privilege is needed to discover hosts using nmap.")
@@ -39,10 +42,19 @@ arp_spoofing.start()
 
 # TODO: Do packet sniffing work in PyShark and save dumps to CSV file
 
+pyshark_capture = PySharkCapture()
+pyshark_capture.start(target)
+
 try:
     while True:
         pass
 except KeyboardInterrupt:
+    # Close the pyshark capture
+    pyshark_capture.restore_flag.set()
+    pyshark_capture.join()
+
+    # Restore the ARP Spoofing tables
     arp_spoofing.restore_flag.set()
     arp_spoofing.join()
+
     sys.exit(0)

@@ -62,9 +62,9 @@ After ARP poisoning is running, you can examine traffic from the target device b
 
 The captured data is stored in a csv file with the following format:
 
-{timestamp, port, type, bytes}
+{timestamp, bytes, srcport, dstport, transfer_protocol, connection_protocol}
 
 ``` CSV
-123123213, 80, HTTP, 200
-123123240, 443, HTTPS, 3023
+123123213, 36, 80, 65124, HTTP, UDP
+123123240, 800, 443, 65125, HTTPS, TCP
 ```

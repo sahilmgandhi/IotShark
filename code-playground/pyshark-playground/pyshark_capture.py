@@ -1,3 +1,5 @@
+# This is just a testing file for a playground, NOT to be used in the actual tool
+
 import pyshark
 import csv
 
