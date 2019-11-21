@@ -1,17 +1,19 @@
 import subprocess
 import re
+import sys
 import scapy.all as scapy
-import tabulate
+from tabulate import tabulate
 
 RESIDENTIAL_SUBNETS = [ 
     { 'subnet_mask': '192.168.0.0/24', 'gateway': '192.168.0.1' }, 
     { 'subnet_mask': '192.168.1.0/24', 'gateway': '192.168.1.1' }
 ]
 
+# Discover the OS and hardware vendor of the given host IP using nmap. Requires root
 def discover_host_info(ip):
-    # DEBUG
-    if ip != '192.168.0.215':
-        return { 'vendor': '(Not Discovered)', 'os_name': '(Not Discovered)'}
+    # For faster debugging only
+    # if ip != '192.168.0.215':
+    #     return { 'vendor': '(Not Discovered)', 'os_name': '(Not Discovered)'}
 
     pipe = subprocess.Popen(['nmap', '-sS', '-O', ip], stdout=subprocess.PIPE)
     nmap_stdout = pipe.communicate()[0].decode('utf-8').split('\n')
@@ -35,6 +37,7 @@ def discover_host_info(ip):
         'vendor': vendor if vendor is not None else '(Not Found)', 
         'os_name': os_name if os_name is not None else '(Not Found)' }
 
+# Scan for all hosts in the given subnet
 def scan_hosts(ip):
     arp_request = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -45,6 +48,7 @@ def scan_hosts(ip):
     if len(answered_list) == 0:
         return answered_list
     print("Host scanning completed. {} hosts found.".format(len(answered_list)))
+
     clients_list = []
     for index, element in enumerate(answered_list):
         ip, mac = element[1].psrc, element[1].hwsrc
@@ -55,15 +59,13 @@ def scan_hosts(ip):
         clients_list.append(client_dict)
     return clients_list
 
+# Print a table of discovered hosts
 def print_result(results_list):
     print(
         tabulate([ [str(index), client["ip"], client["mac"], client["vendor"], client["os_name"]] for index, client in enumerate(results_list) ],
         headers=['ID', 'IP Address', 'MAC Address', 'Vendor', 'Operating System']))
-    # print("ID \t IP \t\t MAC Address \t\t Vendor \t\t Operating System")
-    # print("-" * 100)
-    # for index, client in enumerate(results_list):
-    #     print(str(index) + "\t" + client["ip"] + "\t" + client["mac"] + "\t" + client["vendor"] + "\t" + client["os_name"])
 
+# Given the script's arguments, perform hosts scan and discovery if necessary and prompt the user to select the target host
 def select_device(options):
     target, gateway = options.target, options.gateway
     if target is not None and gateway is not None:
