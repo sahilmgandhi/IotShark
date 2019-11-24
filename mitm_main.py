@@ -42,8 +42,8 @@ arp_spoofing.start()
 
 # TODO: Do packet sniffing work in PyShark and save dumps to CSV file
 
-pyshark_capture = PySharkCapture()
-pyshark_capture.start(target)
+pyshark_capture = PySharkCapture(target)
+pyshark_capture.start()
 
 try:
     while True:
