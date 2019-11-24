@@ -68,3 +68,15 @@ The captured data is stored in a csv file with the following format:
 123123213, 36, 80, 65124, HTTP, UDP
 123123240, 800, 443, 65125, HTTPS, TCP
 ```
+
+# Using the Tool to Sniff IoT Devices
+
+For example, here is a long string that we can say to Alexa Echo Dot/Google Home while sniffing their traffic. Pay attention if the device is transmitting data before the wake word.
+
+```
+It is a dark and stormy night. My friends and I just came back from the Yosemite National Park, where the quick brown fox jumps over the lazy dog. Next week is Thanksgiving. Black Friday in 2019 is coming as well. It's a good time to do something exciting, such as taking a Computer Security class or a Programming Language class at UCLA. By the way, the first Airbus A380 jumbo jet is retiring. We like flying in that plane.
+
+WAKE_WORD, what is the weather like in Los Angeles on Thanksgiving?
+
+Anyways, we have Boeing 787 Dreamliners for cross-continental flights. The Web and Mobile System class with Ravi is amazing. We should upgrade the commercial laundry machine during the Black Friday sale. The bright and sunny weather is coming back and a trip to Joshua Tree National Park awaits. Well, I just saw a slow cat crashed into a new Android robot. There are some other robots made by Apple and Amazon too.
+```
