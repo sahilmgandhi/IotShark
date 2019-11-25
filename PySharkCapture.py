@@ -36,7 +36,7 @@ class PySharkCapture(threading.Thread):
 
         # While the flag is not set, commence the regular operation of sniffing the packets
         while not self.restore_flag.is_set():
-            for packet in self.capture.:
+            for packet in self.capture:
                 if len(self.session_information.packets) >= 50:
                     self.session_information.write_to_file()
                 if 'IP' in packet and (packet.ip.dst == self.target_ip or packet.ip.src == self.target_ip):

@@ -40,8 +40,7 @@ target, gateway = select_device(options)
 arp_spoofing = ArpSpoofing(target, gateway)
 arp_spoofing.start()
 
-# TODO: Do packet sniffing work in PyShark and save dumps to CSV file
-
+# Do packet sniffing work in PyShark and save dumps to CSV file
 pyshark_capture = PySharkCapture(target)
 pyshark_capture.start()
 
