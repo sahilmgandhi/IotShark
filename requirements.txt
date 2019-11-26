@@ -1,6 +1,9 @@
+numpy
 scapy==2.4.3
 Flask==1.1.1
 Jinja2==2.10.3
 matplotlib==3.1.1
 tabulate==0.8.6
 pyshark>=0.4.2.9
+plotly==4.3.0
+pandas==0.25.3

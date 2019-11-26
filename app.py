@@ -7,12 +7,29 @@ import json
 import plotly.graph_objs as go
 import plotly.io as pio
 import pandas as pd
+import threading
 import time
 csv_path = 'csv/'
 graph_update_time = 2 #in seconds
 
 app = Flask(__name__)
 app.secret_key = "asldkfjeori;ngkagieoirgiejgk;lsdgjsoreijw;ralgdkdfilj93852980571qioejfsofgiw984t3qpj;aslkdf"
+
+
+class FlaskApp(threading.Thread):
+    def __init__(self, target_file, target_ip, file_timestamp):
+        threading.Thread.__init__(self)
+        self.restore_flag = threading.Event()
+
+        self.target_file = target_file
+        self.target_ip = target_ip
+        self.file_timestamp = file_timestamp
+
+    def run(self):
+        """
+        Entrypoint that gets started when the thread is invoked
+        """
+        run_flask(self.target_file, self.target_ip, self.file_timestamp)
 
 
 def create_basic_plot():
@@ -85,8 +102,7 @@ def chart_data():
                     yield f"data:{json_data}\n\n"
                 time.sleep(graph_update_time)
 
-    if 'file' not in app.config:
-        return Response(parse_csv(), mimetype='text/event-stream')
+    return Response(parse_csv(), mimetype='text/event-stream')
 
 
 @app.route("/")
@@ -100,17 +116,17 @@ def home():
 
 def run_flask(file, target, stamp):
     if file:
-        app.config['file'] = args.file
-        #app.config['file'] = '../../csv/packetdump_192.168.0.215_1574659522.csv'
+        app.config['file'] = file
         app.run(debug=False, threaded=True)
     else:
         if target and stamp:
-            app.config['target'] = args.target
-            app.config['timestamp'] = args.stamp
-            app.config['target_file'] = get_latest_csv(args.target, args.stamp)
+            app.config['target'] = target
+            app.config['timestamp'] = stamp
+            app.config['target_file'] = get_latest_csv(target, stamp)
             app.run(debug=False, threaded=True)
         else:
             print("Flask server requires either file argument or target and stamp arguments")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -124,7 +140,6 @@ if __name__ == "__main__":
 
     if args.file:
         app.config['file'] = args.file
-        #app.config['file'] = '../../csv/packetdump_192.168.0.215_1574659522.csv'
         app.run(debug=True, threaded=True)
     else:
         if args.target and args.stamp:

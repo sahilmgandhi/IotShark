@@ -51,6 +51,7 @@ Currently this program does three things:
 1. Scan for all hosts either in the given subnet by the `-s` option or a set of common residential subnets
 2. Discover the hardware vendor and OS of each host
 3. Perform ARP poisoning between the selected host and gateway router
+4. Output graphs of past captured data by the `-f` option followed by relative path to csv file
 
 After ARP poisoning is running, you can examine traffic from the target device by Wireshark with a display filter like: 
 

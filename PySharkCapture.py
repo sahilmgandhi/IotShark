@@ -2,12 +2,12 @@ import pyshark
 import csv
 import threading
 import time
-import test.test__osx_support
+#import test.test__osx_support
 import os
 
 
 class PySharkCapture(threading.Thread):
-    def __init__(self, target_ip):
+    def __init__(self, target_ip, file_timestamp):
         """
         Constructor
 
@@ -19,7 +19,7 @@ class PySharkCapture(threading.Thread):
         self.target_ip = target_ip
         curr_path = os.path.dirname(__file__)
         output_file_name = "csv/packetdump_" + \
-            str(target_ip) + "_" + str(round(time.time())) + ".csv"
+            str(target_ip) + "_" + file_timestamp + ".csv"
 
         abs_file_path = os.path.join(curr_path, output_file_name)
         self.session_information = SessionInformation(abs_file_path)
@@ -36,8 +36,8 @@ class PySharkCapture(threading.Thread):
 
         # While the flag is not set, commence the regular operation of sniffing the packets
         while not self.restore_flag.is_set():
-            for packet in self.capture.:
-                if len(self.session_information.packets) >= 50:
+            for packet in self.capture:
+                if len(self.session_information.packets) >= 5:
                     self.session_information.write_to_file()
                 if 'IP' in packet and (packet.ip.dst == self.target_ip or packet.ip.src == self.target_ip):
                     print("Packet acquired")
@@ -101,7 +101,7 @@ class SessionInformation:
         print(
             f"Writing {len(self.packets)} packets to {self.output_file_name}")
 
-        with open(self.output_file_name, 'a+') as output_file:
+        with open(self.output_file_name, 'a+', os.O_NONBLOCK) as output_file:
             writer = csv.writer(output_file)
             for row in self.packets:
                 writer.writerow(row)
