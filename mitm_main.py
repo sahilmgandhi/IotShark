@@ -69,7 +69,6 @@ else:
 
     flask_app = FlaskApp(target_file=None, target_ip=target, file_timestamp=timestamp)
     flask_app.start()
-    #flask_app = call(['python', 'code-playground/flask-playground/app.py', '--target', target, '--stamp', timestamp])
 
     try:
         while True:
