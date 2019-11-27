@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from os import listdir, O_NONBLOCK
 from os.path import isfile, join
 import csv
@@ -10,7 +10,7 @@ import pandas as pd
 import threading
 import time
 csv_path = 'csv/'
-graph_update_time = 2 #in seconds
+graph_update_time = 1  # in seconds
 
 app = Flask(__name__)
 app.secret_key = "asldkfjeori;ngkagieoirgiejgk;lsdgjsoreijw;ralgdkdfilj93852980571qioejfsofgiw984t3qpj;aslkdf"
@@ -48,10 +48,10 @@ def create_basic_plot():
             else:
                 y[x.index(x_val)] += int(row[1])
 
-    df = pd.DataFrame({'x': x, 'y': y}) # creating a sample dataframe
+    df = pd.DataFrame({'x': x, 'y': y})  # creating a sample dataframe
     data = [
         go.Bar(
-            x=df['x'], # assign x as the dataframe column 'x'
+            x=df['x'],  # assign x as the dataframe column 'x'
             y=df['y'],
             marker_color='black'
         )
@@ -75,7 +75,7 @@ def create_basic_plot():
 
 def get_latest_csv(target, timestamp):
     file_name = 'packetdump_' + target + '_' + timestamp + '.csv'
-    #wait until PySharkCapture creates file
+    # wait until PySharkCapture creates file
     while file_name not in listdir(csv_path):
         pass
     return file_name
@@ -88,17 +88,23 @@ def chart_data():
         with open(csv_path + app.config['target_file'], 'r', O_NONBLOCK) as csv_data_file:
             while True:
                 total_bytes = 0
+                incoming_bytes = 0
+                outgoing_bytes = 0
                 no_new_data = True
                 csv_reader = csv.reader(csv_data_file)
                 for row in csv_reader:
                     if curr_time == -1:
                         curr_time = int(row[0])
-                    total_bytes += int(row[1])
+                    incoming_bytes += int(row[1])
+                    outgoing_bytes += int(row[2])
                     last_time = row[0]
                 curr_time += graph_update_time
                 if curr_time != -1:
-                    formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
-                    json_data = json.dumps({'time': formatted_time, 'value': total_bytes})
+                    total_bytes = incoming_bytes + outgoing_bytes
+                    formatted_time = time.strftime(
+                        '%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
+                    json_data = json.dumps(
+                        {'time': formatted_time, 'total_bytes': total_bytes, 'incoming_bytes': incoming_bytes, 'outgoing_bytes': outgoing_bytes})
                     yield f"data:{json_data}\n\n"
                 time.sleep(graph_update_time)
 
@@ -125,7 +131,8 @@ def run_flask(file, target, stamp):
             app.config['target_file'] = get_latest_csv(target, stamp)
             app.run(debug=False, threaded=True)
         else:
-            print("Flask server requires either file argument or target and stamp arguments")
+            print(
+                "Flask server requires either file argument or target and stamp arguments")
 
 
 if __name__ == "__main__":
@@ -149,5 +156,3 @@ if __name__ == "__main__":
             app.run(debug=True, threaded=True)
         else:
             print("Flask server requires either -f argument or -t and -s arguments")
-
-

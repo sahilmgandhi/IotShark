@@ -42,14 +42,15 @@ def get_arguments():
 
 options = get_arguments()
 if options.file:
-    flask_app = FlaskApp(target_file=options.file, target_ip=None, file_timestamp=None)
+    flask_app = FlaskApp(target_file=options.file,
+                         target_ip=None, file_timestamp=None)
     flask_app.start()
 
     try:
         while True:
             pass
     except KeyboardInterrupt:
-        #Close the flask app
+        # Close the flask app
         flask_app.restore_flag.set()
         sys.exit(0)
 else:
@@ -62,19 +63,19 @@ else:
     arp_spoofing = ArpSpoofing(target, gateway)
     arp_spoofing.start()
 
-    # TODO: Do packet sniffing work in PyShark and save dumps to CSV file
     timestamp = str(round(time.time()))
     pyshark_capture = PySharkCapture(target, timestamp)
     pyshark_capture.start()
 
-    flask_app = FlaskApp(target_file=None, target_ip=target, file_timestamp=timestamp)
+    flask_app = FlaskApp(target_file=None, target_ip=target,
+                         file_timestamp=timestamp)
     flask_app.start()
 
     try:
         while True:
             pass
     except KeyboardInterrupt:
-        #Close the flask app
+        # Close the flask app
         flask_app.restore_flag.set()
 
         # Close the pyshark capture

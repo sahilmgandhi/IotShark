@@ -6,7 +6,16 @@ from tabulate import tabulate
 
 RESIDENTIAL_SUBNETS = [
     {'subnet_mask': '192.168.0.0/24', 'gateway': '192.168.0.1'},
-    {'subnet_mask': '192.168.1.0/24', 'gateway': '192.168.1.1'}
+    {'subnet_mask': '192.168.1.0/24', 'gateway': '192.168.1.1'},
+    {'subnet_mask': '192.168.2.0/24', 'gateway': '192.168.2.1'},
+    {'subnet_mask': '192.168.3.0/24', 'gateway': '192.168.3.1'},
+    {'subnet_mask': '192.168.4.0/24', 'gateway': '192.168.4.1'},
+    {'subnet_mask': '192.168.5.0/24', 'gateway': '192.168.5.1'},
+    {'subnet_mask': '192.168.6.0/24', 'gateway': '192.168.6.1'},
+    {'subnet_mask': '192.168.7.0/24', 'gateway': '192.168.7.1'},
+    {'subnet_mask': '192.168.8.0/24', 'gateway': '192.168.8.1'},
+    {'subnet_mask': '192.168.9.0/24', 'gateway': '192.168.9.1'},
+    {'subnet_mask': '192.168.10.0/24', 'gateway': '192.168.10.1'}
 ]
 
 
@@ -41,9 +50,8 @@ def discover_host_info(ip):
         'vendor': vendor if vendor is not None else '(Not Found)',
         'os_name': os_name if os_name is not None else '(Not Found)'}
 
+
 # Scan for all hosts in the given subnet
-
-
 def scan_hosts(ip):
     arp_request = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -86,6 +94,7 @@ def select_device(options):
     else:
         print("No target, gateway or scanning subnet is provided. Proceed with scanning on common residential subnets.")
         for subnet in RESIDENTIAL_SUBNETS:
+            print(f"Scanning gateway: {subnet['gateway']} ...")
             gateway = subnet['gateway']
             scan_result = scan_hosts(subnet['subnet_mask'])
             if len(scan_result) > 0:
