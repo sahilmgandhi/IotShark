@@ -26,9 +26,9 @@ huge amounts of data (and we would require many devices and individuals to gathe
 
 # How to run;
 
-1. Install the required libraries `$pip3 -r requirements.txt`
-2. `$sudo sysctl net.inet.ip.forwarding=1`
-3. ... TODO:
+1. Install the required libraries: `$pip3 -r requirements.txt`
+2. Set up the ip forwarding: `$sudo sysctl net.inet.ip.forwarding=1`
+3. Run the app: `sudo python3 mitm_main.py`
 
 ## The Main Script
 Create a Python virtual envionment and install dependency packages.
@@ -63,11 +63,11 @@ After ARP poisoning is running, you can examine traffic from the target device b
 
 The captured data is stored in a csv file with the following format:
 
-{timestamp, bytes, srcport, dstport, transfer_protocol, connection_protocol}
+{timestamp, incoming_bytes, outgoing_bytes, srcport, dstport, transfer_protocol, connection_protocol, srcip, dstip}
 
 ``` CSV
-123123213, 36, 80, 65124, HTTP, UDP
-123123240, 800, 443, 65125, HTTPS, TCP
+123123213, 0, 240, 36, 80, 65124, HTTP, UDP, 192.168.0.215, 104.24.4.5
+123123240, 300, 0, 800, 443, 65125, HTTPS, TCP, 104.24.4.5, 192.168.0.215
 ```
 
 # Using the Tool to Sniff IoT Devices
