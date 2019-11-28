@@ -98,12 +98,6 @@
 
         source.onmessage = function (event) {
             const data = JSON.parse(event.data);
-            if (config.data.labels.length === 50) {
-                config.data.labels.shift();
-                config.data.datasets[0].data.shift();
-                config.data.datasets[1].data.shift();
-                config.data.datasets[2].data.shift();
-            }
             config.data.labels.push(data.time);
             config.data.datasets[0].data.push(data.total_bytes);
             config.data.datasets[1].data.push(data.incoming_bytes);
