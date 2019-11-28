@@ -5,3 +5,4 @@ pyshark_playground/Eavesdrop_Data.txt
 tools/*.csv
 
 csv/*.csv
+csv/*.json

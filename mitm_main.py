@@ -1,6 +1,7 @@
 from ArpSpoofing import ArpSpoofing
 from DiscoverHosts import select_device
 from PySharkCapture import PySharkCapture
+from StaticCSVAnalysis import StaticCSVAnalysis
 from subprocess import call, PIPE
 import argparse
 import os
@@ -85,5 +86,11 @@ else:
         # Restore the ARP Spoofing tables
         arp_spoofing.restore_flag.set()
         arp_spoofing.join()
+
+        print("Performing static analysis on CSV file now ... ")
+        file_name = 'csv/packetdump_' + target + '_' + timestamp + '.csv'
+        StaticCSVAnalysis(csv_file=file_name)
+
+        print("Static analysis finished. Press Ctrl+C again to stop the Flask Server ...")
 
         sys.exit(0)

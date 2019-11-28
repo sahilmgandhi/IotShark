@@ -51,4 +51,4 @@ class ArpSpoofing(threading.Thread):
         print("\nReseting ARP tables. Please wait.")
         self.restore(self.target, self.gateway)
         self.restore(self.gateway, self.target)
-        print("\nARP table restored. Press Ctrl+C again to stop the Flask Server ...")
+        print("\nARP table restored.")

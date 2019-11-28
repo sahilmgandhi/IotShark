@@ -33,7 +33,7 @@ class PySharkCapture(threading.Thread):
         """
         Entrypoint that gets started when the thread is invoked
         """
-        NUM_PACKETS_TO_FLUSH = 2
+        NUM_PACKETS_TO_FLUSH = 5
         # While the flag is not set, commence the regular operation of sniffing the packets
         while not self.restore_flag.is_set():
             for packet in self.capture:
