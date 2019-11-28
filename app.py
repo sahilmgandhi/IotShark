@@ -264,6 +264,11 @@ def chart_data():
 
     return Response(parse_csv(), mimetype='text/event-stream')
 
+@app.route('/user-state-data')
+def user_state_data():
+    # TODO: stream the User State data (Ex. the user starts/ends speaking to the voice assistant)
+    def parse_csv():
+        pass
 
 @app.route("/")
 def home():

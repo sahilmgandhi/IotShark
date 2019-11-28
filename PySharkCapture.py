@@ -60,7 +60,15 @@ class PySharkCapture(threading.Thread):
                             incoming_bytes = packet.udp.length
 
                         self.session_information.add_packet_info(
-                            timestamp=round(time.time()), incoming_bytes=incoming_bytes, outgoing_bytes=outgoing_bytes, srcport=packet.udp.srcport, dstport=packet.udp.dstport, transfer_protocol="None", connection_protocol="UDP", srcip=srcip, dstip=dstip)
+                            timestamp=round(time.time()), 
+                                incoming_bytes=incoming_bytes, 
+                                outgoing_bytes=outgoing_bytes,
+                                srcport=packet.udp.srcport, 
+                                dstport=packet.udp.dstport, 
+                                transfer_protocol="None", 
+                                connection_protocol="UDP", 
+                                srcip=srcip, 
+                                dstip=dstip)
 
                     if 'TCP' in packet:
                         transfer_protocol_type = "None"
@@ -77,7 +85,15 @@ class PySharkCapture(threading.Thread):
                                 outgoing_bytes = len(packet.tcp.segment_data)
 
                         self.session_information.add_packet_info(
-                            timestamp=round(time.time()), incoming_bytes=incoming_bytes, outgoing_bytes=outgoing_bytes, srcport=packet.tcp.srcport, dstport=packet.tcp.dstport, transfer_protocol=transfer_protocol_type, connection_protocol="TCP", srcip=srcip, dstip=dstip)
+                            timestamp=round(time.time()), 
+                                incoming_bytes=incoming_bytes, 
+                                outgoing_bytes=outgoing_bytes, 
+                                srcport=packet.tcp.srcport, 
+                                dstport=packet.tcp.dstport, 
+                                transfer_protocol=transfer_protocol_type, 
+                                connection_protocol="TCP", 
+                                srcip=srcip, 
+                                dstip=dstip)
 
         # If the flag is set (ie. the user has pressed ctrl+c), then close the capture gracefully
         print("\nClosing the pyshark capture ...")
