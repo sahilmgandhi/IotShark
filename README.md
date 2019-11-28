@@ -17,14 +17,7 @@ We also aim to classify certain kinds of data such as heartbeat messages, data t
 last one will likely be demonstrated on the un-encrypted RPi test since it is difficult to do anomaly detection without
 huge amounts of data (and we would require many devices and individuals to gather that much data). 
 
-# TODOs
-
-1. Combine the three services together
-2. Test on other devices to automate some more of the setup
-3. Test on a R-Pi for non-encrypted data.
-4. Finish this README
-
-# How to run;
+# How to run:
 
 1. Install the required libraries: `$pip3 -r requirements.txt`
 2. Set up the ip forwarding: `$sudo sysctl net.inet.ip.forwarding=1`
