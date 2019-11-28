@@ -2,6 +2,7 @@ from ArpSpoofing import ArpSpoofing
 from DiscoverHosts import select_device
 from PySharkCapture import PySharkCapture
 from StaticCSVAnalysis import StaticCSVAnalysis
+from UserState import UserState
 from subprocess import call, PIPE
 import argparse
 import os
@@ -10,6 +11,7 @@ import sys
 import time
 import threading
 from app import FlaskApp
+import keyboard
 
 """
 Use cases:
@@ -40,6 +42,28 @@ def get_arguments():
     options = parser.parse_args()
     return options
 
+def cleanup():
+    """
+    Clean up and exit the script after user issues SIGTERM
+    """
+    # Close the flask app
+    flask_app.restore_flag.set()
+
+    # Close the pyshark capture
+    pyshark_capture.restore_flag.set()
+    pyshark_capture.join()
+
+    # Restore the ARP Spoofing tables
+    arp_spoofing.restore_flag.set()
+    arp_spoofing.join()
+
+    print("Performing static analysis on CSV file now ... ")
+    file_name = 'csv/packetdump_' + target + '_' + timestamp + '.csv'
+    StaticCSVAnalysis(csv_file=file_name)
+
+    print("Static analysis finished. Press Ctrl+C again to stop the Flask Server ...")
+
+    sys.exit(0)
 
 options = get_arguments()
 if options.file:
@@ -67,30 +91,26 @@ else:
     timestamp = str(round(time.time()))
     pyshark_capture = PySharkCapture(target, timestamp)
     pyshark_capture.start()
+    user_state = UserState(target, timestamp)
 
     flask_app = FlaskApp(target_file=None, target_ip=target,
                          file_timestamp=timestamp)
     flask_app.start()
 
     try:
+        speaking_button_debouncing = None  # a Unix epoch for the last time the "user speaking button" is pressed
         while True:
-            pass
+            # User can press Space to log his interaction with the voice assistant.
+            # Ex. press Space once and begin speaking to Alexa; press it again after finish speaking
+            # Assume adjacent presses of the key is at least 1 second away to debounce keyboard key press check
+            if speaking_button_debouncing is not None and time.time() < speaking_button_debouncing + 1:
+                continue
+            if keyboard.is_pressed('space'):
+                user_state.toggle_user_speaking_state()
+                speaking_button_debouncing = time.time()
+            elif keyboard.is_pressed('ctrl+c'):
+                print(" User pressed Ctrl-C.")
+                cleanup()
+
     except KeyboardInterrupt:
-        # Close the flask app
-        flask_app.restore_flag.set()
-
-        # Close the pyshark capture
-        pyshark_capture.restore_flag.set()
-        pyshark_capture.join()
-
-        # Restore the ARP Spoofing tables
-        arp_spoofing.restore_flag.set()
-        arp_spoofing.join()
-
-        print("Performing static analysis on CSV file now ... ")
-        file_name = 'csv/packetdump_' + target + '_' + timestamp + '.csv'
-        StaticCSVAnalysis(csv_file=file_name)
-
-        print("Static analysis finished. Press Ctrl+C again to stop the Flask Server ...")
-
-        sys.exit(0)
+        cleanup()
