@@ -139,6 +139,8 @@ class StaticCSVAnalysis():
         data['total_outgoing_bytes'] = total_outgoing_bytes
         data['total_bytes'] = total_incoming_bytes + total_outgoing_bytes
         data['num_local_connections'] = num_local_connections
+        data['num_global_connections'] = row_count - num_local_connections
+        data['num_total_connections'] = row_count
         data['src_port_map'] = src_port_map
         data['dst_port_map'] = dst_port_map
         data['protocol_map'] = transfer_protocol_map
