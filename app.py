@@ -115,7 +115,10 @@ def chart_data():
 def home():
     if 'file' in app.config:
         bytes_over_time_bar = create_basic_plot()
-        return render_template('static_index.html', plot=bytes_over_time_bar, file=app.config['file'])
+        with open(app.config['file'][:-4] + '.json') as json_file:
+            data = json.load(json_file)
+
+        return render_template('static_index.html', plot=bytes_over_time_bar, file=app.config['file'], json_data=data)
     else:
         return render_template('dynamic_index.html')
 

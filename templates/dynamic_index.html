@@ -35,13 +35,6 @@
                 labels: [],
                 datasets: [
                     {
-                        label: "Total Bytes",
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [],
-                        fill: false,
-                    },
-                    {
                         label: "Incoming Bytes",
                         backgroundColor: 'rgb(99, 255, 99)',
                         borderColor: 'rgb(99, 255, 99)',
@@ -99,9 +92,8 @@
         source.onmessage = function (event) {
             const data = JSON.parse(event.data);
             config.data.labels.push(data.time);
-            config.data.datasets[0].data.push(data.total_bytes);
-            config.data.datasets[1].data.push(data.incoming_bytes);
-            config.data.datasets[2].data.push(data.outgoing_bytes);
+            config.data.datasets[0].data.push(data.incoming_bytes);
+            config.data.datasets[1].data.push(data.outgoing_bytes);
             lineChart.update();
         }
     });
