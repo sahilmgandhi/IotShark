@@ -33,31 +33,41 @@ class FlaskApp(threading.Thread):
 
 
 def create_basic_plot():
-    x = []
-    y = []
+    time_stamps = []
+    incoming_bytes = []
+    outgoing_bytes = []
+
     start_time = -1
     with open(app.config['file'], 'r') as csv_data_file:
+        print("Reading in csv file")
         csv_reader = csv.reader(csv_data_file)
         for row in csv_reader:
             if start_time == -1:
                 start_time = int(row[0])
             x_val = int(row[0]) - start_time
-            if x_val not in x:
-                x.append(x_val)
-                y.append(int(row[1]))
+            if x_val not in time_stamps:
+                time_stamps.append(x_val)
+                incoming_bytes.append(int(row[1]))
+                outgoing_bytes.append(int(row[2]))
             else:
-                y[x.index(x_val)] += int(row[1])
+                incoming_bytes[time_stamps.index(x_val)] += int(row[1])
+                outgoing_bytes[time_stamps.index(x_val)] += int(row[2])
 
-    df = pd.DataFrame({'x': x, 'y': y})  # creating a sample dataframe
-    data = [
-        go.Bar(
-            x=df['x'],  # assign x as the dataframe column 'x'
-            y=df['y'],
-            marker_color='black'
-        )
-    ]
+    print("Done reading in csv file")
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=time_stamps,  # assign x as the dataframe column 'x'
+        y=incoming_bytes,
+        mode='lines+markers',
+        name='Incoming Bytes'
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,  # assign x as the dataframe column 'x'
+        y=outgoing_bytes,
+        mode='lines+markers',
+        name='Outgoing Bytes'
+    ))
 
-    fig = go.Figure(data)
     fig.update_layout(
         title="Bytes Sent over Time",
         xaxis_title="Time in Seconds",
@@ -69,7 +79,9 @@ def create_basic_plot():
         )
     )
 
+    print("Converting graph to JSON")
     graphJSON = pio.to_json(fig)
+    print("Finished converting graph to JSON")
     return graphJSON
 
 
@@ -120,10 +132,11 @@ def user_state_data():
 def home():
     if 'file' in app.config:
         bytes_over_time_bar = create_basic_plot()
-        with open(app.config['file'][:-4] + '.json') as json_file:
+        json_file_name = app.config['file'][:-4] + '.json'
+        with open(json_file_name) as json_file:
             data = json.load(json_file)
 
-        return render_template('static_index.html', plot=bytes_over_time_bar, file=app.config['file'], json_data=data)
+        return render_template('static_index.html', plot=bytes_over_time_bar, csv_file=app.config['file'], json_data=data, json_file=json_file_name)
     else:
         return render_template('dynamic_index.html')
 
