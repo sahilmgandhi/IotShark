@@ -94,18 +94,18 @@ class StaticCSVAnalysis():
                                  ]['incoming_bytes'] = curr_incoming_bytes
 
                 # Update the source ip map
-                if row[7] in src_ip_map:
-                    src_ip_map[row[7]]['outgoing_bytes'] += curr_outgoing_bytes
+                if row[8] in src_ip_map:
+                    src_ip_map[row[8]]['outgoing_bytes'] += curr_outgoing_bytes
                 else:
-                    src_ip_map[row[7]] = {}
-                    src_ip_map[row[7]]['outgoing_bytes'] = curr_outgoing_bytes
+                    src_ip_map[row[8]] = {}
+                    src_ip_map[row[8]]['outgoing_bytes'] = curr_outgoing_bytes
 
                 # Update the destination ip map
-                if row[8] in dst_ip_map:
-                    dst_ip_map[row[8]]['incoming_bytes'] += curr_incoming_bytes
+                if row[7] in dst_ip_map:
+                    dst_ip_map[row[7]]['incoming_bytes'] += curr_incoming_bytes
                 else:
-                    dst_ip_map[row[8]] = {}
-                    dst_ip_map[row[8]]['incoming_bytes'] = curr_incoming_bytes
+                    dst_ip_map[row[7]] = {}
+                    dst_ip_map[row[7]]['incoming_bytes'] = curr_incoming_bytes
 
                 # Update the isp map for source IP
                 if row[7] in isp_map or row[7][0:7] == "192.168":
