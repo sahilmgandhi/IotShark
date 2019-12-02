@@ -5,137 +5,87 @@
     <title>DASH - Determine And Secure the House</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" rel="stylesheet">
+    <link href="static/style.css" rel="stylesheet">
+
+    <!--suppress JSUnresolvedLibraryURL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!--suppress JSUnresolvedLibraryURL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--suppress JSUnresolvedLibraryURL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="static/dynamic_index_init.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="title">
     <h1>DASH - Determine And Secure the House</h1>
 </div>
-<div class="container">
+<div class="main-container">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="canvas"></canvas>
+                    <div class="graph">
+                        <canvas id="canvas"></canvas>
+                    </div>
+
+                    <div class="trace-selector">
+                        <p><strong>Real-time Graphs: </strong></p>
+                    
+                        <div>
+                            <input type="checkbox" id="incoming" name="incoming" onclick="checkboxOnClick();" checked>
+                            <label for="incoming">Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="outgoing" name="outgoing" onclick="checkboxOnClick();" checked>
+                            <label for="outgoing">Outgoing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="udp_incoming" name="udp_incoming" onclick="checkboxOnClick();">
+                            <label for="udp_incoming">UDP Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="udp_outgoing" name="udp_outgoing" onclick="checkboxOnClick();">
+                            <label for="udp_outgoing">UDP Outgoing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tcp_incoming" name="tcp_incoming" onclick="checkboxOnClick();">
+                            <label for="tcp_incoming">TCP Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tcp_outgoing" name="tcp_outgoing" onclick="checkboxOnClick();">
+                            <label for="tcp_outgoing">TCP Outgoing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="others_incoming" name="others_incoming" onclick="checkboxOnClick();">
+                            <label for="others_incoming">Other Connection Protocol Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="others_outgoing" name="others_outgoing" onclick="checkboxOnClick();">
+                            <label for="others_outgoing">Other Connection Protocol Outgoing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="http_incoming" name="http_incoming" onclick="checkboxOnClick();">
+                            <label for="http_incoming">HTTP Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="http_outgoing" name="http_outgoing" onclick="checkboxOnClick();">
+                            <label for="http_outgoing">HTTP Outgoing</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="https_incoming" name="https_incoming" onclick="checkboxOnClick();">
+                            <label for="https_incoming">HTTPS Incoming</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="https_outgoing" name="https_outgoing" onclick="checkboxOnClick();">
+                            <label for="https_outgoing">HTTPS Outgoing</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!--suppress JSUnresolvedLibraryURL -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<!--suppress JSUnresolvedLibraryURL -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<!--suppress JSUnresolvedLibraryURL -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<script>
-    $(document).ready(function () {
-        const config = {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    {
-                        label: "Incoming Bytes",
-                        backgroundColor: 'rgb(99, 255, 99)',
-                        borderColor: 'rgb(99, 255, 99)',
-                        data: [],
-                        fill: false,
-                        yAxisID: "y-axis-left"
-                    },
-                    {
-                        label: "Outgoing Bytes",
-                        backgroundColor: 'rgb(56, 22, 247)',
-                        borderColor: 'rgb(56, 22, 247)',
-                        data: [],
-                        fill: false,
-                        yAxisID: "y-axis-left"
-                    },
-                    {
-                        label: "Is the User Talking to the Voice Assistant?",
-                        backgroundColor: 'rgb(225, 141, 94)',
-                        borderColor: 'rgb(225, 141, 94)',
-                        data: [],
-                        fill: false,
-                        yAxisID: "y-axis-right"
-                    }
-                ],
-            },
-            options: {
-                responsive: true,
-                title: {
-                    display: true,
-                    text: 'Bytes Sent by Device'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Time (s)'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Bytes',
-                        },
-                        id: 'y-axis-left',
-                        position: 'left'
-                    }, {
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Is the User Talking to the Assistant?',
-                        },
-                        id: 'y-axis-right',
-                        position: 'right',
-                        ticks: {
-                            suggestedMin: 0,
-                            suggestedMax: 1,
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-        };
-
-        const context = document.getElementById('canvas').getContext('2d');
-
-        const lineChart = new Chart(context, config);
-
-        // User States at the current moment
-        let user_speaking = 0;
-
-        // Packetdump Data
-        const source_packetdump = new EventSource("/chart-data");
-
-        source_packetdump.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            config.data.labels.push(data.time);
-            config.data.datasets[0].data.push(data.incoming_bytes);
-            config.data.datasets[1].data.push(data.outgoing_bytes);
-            config.data.datasets[2].data.push(user_speaking);
-            lineChart.update();
-        }
-
-        // Userstate Data
-        const source_userstate = new EventSource("/user-state-data");
-    
-        source_userstate.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            user_speaking = data.user_speaking;
-        }
-    });
-</script>
+<script src="static/dynamic_index_draw.js"></script>
 </body>
 </html>
 

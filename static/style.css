@@ -1,0 +1,19 @@
+.title {
+    text-align: center;
+}
+
+.main-container {
+    margin: 30px;
+}
+
+.card-body {
+    display: flex;
+}
+
+.graph {
+    flex: 1;
+}
+
+.trace-selector {
+    width: 300px;
+}

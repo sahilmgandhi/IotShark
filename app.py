@@ -9,6 +9,8 @@ import plotly.io as pio
 import pandas as pd
 import threading
 import time
+from enum import Enum
+
 csv_path = 'csv/'
 packetdump_graph_update_time = 1  # in seconds
 userstate_graph_update_time = 0.2  # in seconds
@@ -241,27 +243,89 @@ def get_latest_userstate_csv(target, timestamp):
 @app.route('/chart-data')
 def chart_data():
     def parse_csv():
+        class PacketDirection(Enum):
+            Incoming = 0
+            Outgoing = 1
+            Unknown = 2
+        
+        def packetDirection(row):
+            if row[7] == app.config['target']:  # srcip
+                return PacketDirection.Outgoing
+            elif row[8] == app.config['target']:  # dstip
+                return PacketDirection.Incoming
+            else:
+                return PacketDirection.Unknown
+
         curr_time = -1
         with open(csv_path + app.config['target_file'], 'r', O_NONBLOCK) as csv_data_file:
             while True:
                 total_bytes = 0
                 incoming_bytes = 0
                 outgoing_bytes = 0
+                udp_incoming_bytes = 0
+                udp_outgoing_bytes = 0
+                tcp_incoming_bytes = 0
+                tcp_outgoing_bytes = 0
+                others_incoming_bytes = 0
+                others_outgoing_bytes = 0
+                http_incoming_bytes = 0
+                http_outgoing_bytes = 0
+                https_incoming_bytes = 0
+                https_outgoing_bytes = 0
+
                 no_new_data = True
                 csv_reader = csv.reader(csv_data_file)
                 for row in csv_reader:
                     if curr_time == -1:
                         curr_time = int(row[0])
-                    incoming_bytes += int(row[1])
-                    outgoing_bytes += int(row[2])
+        
+                    curr_incoming_bytes = int(row[1])
+                    curr_outgoing_bytes = int(row[2])
+                    incoming_bytes += curr_incoming_bytes
+                    outgoing_bytes += curr_outgoing_bytes
+                    udp_incoming_bytes += curr_incoming_bytes if (
+                        row[6] == 'UDP' and packetDirection(row) == PacketDirection.Incoming) else 0
+                    udp_outgoing_bytes += curr_outgoing_bytes if (
+                        row[6] == 'UDP' and packetDirection(row) == PacketDirection.Outgoing) else 0
+                    tcp_incoming_bytes += curr_incoming_bytes if (
+                        row[6] == 'TCP' and packetDirection(row) == PacketDirection.Incoming) else 0
+                    tcp_outgoing_bytes += curr_outgoing_bytes if (
+                        row[6] == 'TCP' and packetDirection(row) == PacketDirection.Outgoing) else 0
+                    others_incoming_bytes += curr_incoming_bytes if (
+                        row[6] != 'UDP' and row[6] != 'TCP' and packetDirection(row) == PacketDirection.Incoming) else 0
+                    others_outgoing_bytes += curr_outgoing_bytes if (
+                        row[6] != 'UDP' and row[6] != 'TCP' and packetDirection(row) == PacketDirection.Outgoing) else 0
+                    http_incoming_bytes += curr_incoming_bytes if (
+                        row[5] == 'HTTP' and packetDirection(row) == PacketDirection.Incoming) else 0
+                    http_outgoing_bytes += curr_outgoing_bytes if (
+                        row[5] == 'HTTP' and packetDirection(row) == PacketDirection.Outgoing) else 0
+                    https_incoming_bytes += curr_incoming_bytes if (
+                        row[5] == 'HTTPS' and packetDirection(row) == PacketDirection.Incoming) else 0
+                    https_outgoing_bytes += curr_outgoing_bytes if (
+                        row[5] == 'HTTPS' and packetDirection(row) == PacketDirection.Outgoing) else 0
+
                     last_time = row[0]
                 curr_time += packetdump_graph_update_time
                 if curr_time != -1:
                     total_bytes = incoming_bytes + outgoing_bytes
                     formatted_time = time.strftime(
                         '%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
-                    json_data = json.dumps(
-                        {'time': formatted_time, 'total_bytes': total_bytes, 'incoming_bytes': incoming_bytes, 'outgoing_bytes': outgoing_bytes})
+                    json_data = json.dumps({
+                        'time': formatted_time, 
+                        'total_bytes': total_bytes,
+                        'incoming_bytes': incoming_bytes,
+                        'outgoing_bytes': outgoing_bytes,
+                        'udp_incoming_bytes': udp_incoming_bytes,
+                        'udp_outgoing_bytes': udp_outgoing_bytes,
+                        'tcp_incoming_bytes': tcp_incoming_bytes,
+                        'tcp_outgoing_bytes': tcp_outgoing_bytes,
+                        'others_incoming_bytes': others_incoming_bytes,
+                        'others_outgoing_bytes': others_outgoing_bytes,
+                        'http_incoming_bytes': http_incoming_bytes,
+                        'http_outgoing_bytes': http_outgoing_bytes,
+                        'https_incoming_bytes': https_incoming_bytes,
+                        'https_outgoing_bytes': https_outgoing_bytes
+                    })
                     yield f"data:{json_data}\n\n"
                 time.sleep(packetdump_graph_update_time)
 
