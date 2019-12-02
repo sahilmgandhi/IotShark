@@ -24,6 +24,12 @@ class StaticCSVAnalysis():
         isp_map = {}
         src_ip_map = {}
         dst_ip_map = {}
+        tcp_map = {}
+        tcp_map['incoming_bytes'] = 0
+        tcp_map['outgoing_bytes'] = 0
+        udp_map = {}
+        udp_map['incoming_bytes'] = 0
+        udp_map['outgoing_bytes'] = 0
         transfer_protocol_map = {}
         connection_protocol_map = {}
         num_local_connections = 0
@@ -133,6 +139,15 @@ class StaticCSVAnalysis():
                     except Exception as e:
                         print("Could not download json" + str(e))
 
+                # Update the tcp or udp maps
+                if row[6] == "UDP":
+                    udp_map['incoming_bytes'] += curr_incoming_bytes
+                    udp_map['outgoing_bytes'] += curr_outgoing_bytes
+
+                if row[6] == "TCP":
+                    tcp_map['incoming_bytes'] += curr_incoming_bytes
+                    tcp_map['outgoing_bytes'] += curr_outgoing_bytes
+
         json_file = csv_file[:-4] + ".json"
 
         data['total_incoming_bytes'] = total_incoming_bytes
@@ -148,6 +163,8 @@ class StaticCSVAnalysis():
         data['isp_map'] = isp_map
         data['src_ip_map'] = src_ip_map
         data['dst_ip_map'] = dst_ip_map
+        data['udp_map'] = udp_map
+        data['tcp_map'] = tcp_map
 
         with open(json_file, 'w') as output_file:
             json.dump(data, output_file, indent=4)

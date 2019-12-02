@@ -33,10 +33,25 @@ class FlaskApp(threading.Thread):
         run_flask(self.target_file, self.target_ip, self.file_timestamp)
 
 
+def append_to_map(incoming_map, outgoing_map, incoming, outgoing):
+    incoming_map.append(incoming)
+    outgoing_map.append(outgoing)
+
+
 def create_basic_plot():
     time_stamps = []
     incoming_bytes = []
     outgoing_bytes = []
+    udp_outgoing = []
+    udp_incoming = []
+    tcp_outgoing = []
+    tcp_incoming = []
+    other_connection_incoming = []
+    other_connection_outgoing = []
+    http_incoming = []
+    http_outgoing = []
+    https_incoming = []
+    https_outgoing = []
 
     start_time = -1
     with open(app.config['file'], 'r') as csv_data_file:
@@ -46,33 +61,160 @@ def create_basic_plot():
             if start_time == -1:
                 start_time = int(row[0])
             x_val = int(row[0]) - start_time
+            incoming = int(row[1])
+            outgoing = int(row[2])
+
             if x_val not in time_stamps:
                 time_stamps.append(x_val)
-                incoming_bytes.append(int(row[1]))
-                outgoing_bytes.append(int(row[2]))
+                append_to_map(incoming_map=incoming_bytes,
+                              outgoing_map=outgoing_bytes, incoming=incoming, outgoing=outgoing)
+
+                if row[5] == "HTTP":
+                    append_to_map(incoming_map=http_incoming, outgoing_map=http_outgoing,
+                                  incoming=incoming, outgoing=outgoing)
+                else:
+                    append_to_map(incoming_map=http_incoming, outgoing_map=http_outgoing,
+                                  incoming=0, outgoing=0)
+                if row[5] == "HTTPS":
+                    append_to_map(incoming_map=https_incoming, outgoing_map=https_outgoing,
+                                  incoming=incoming, outgoing=outgoing)
+                else:
+                    append_to_map(incoming_map=https_incoming, outgoing_map=https_outgoing,
+                                  incoming=0, outgoing=0)
+
+                if row[6] == "UDP":
+                    append_to_map(incoming_map=udp_incoming, outgoing_map=udp_outgoing,
+                                  incoming=incoming, outgoing=outgoing)
+                else:
+                    append_to_map(incoming_map=udp_incoming, outgoing_map=udp_outgoing,
+                                  incoming=0, outgoing=0)
+                if row[6] == "TCP":
+                    append_to_map(incoming_map=tcp_incoming, outgoing_map=tcp_outgoing,
+                                  incoming=incoming, outgoing=outgoing)
+                else:
+                    append_to_map(incoming_map=tcp_incoming, outgoing_map=tcp_outgoing,
+                                  incoming=0, outgoing=0)
+                if row[6] == "None":
+                    append_to_map(incoming_map=other_connection_incoming, outgoing_map=other_connection_outgoing,
+                                  incoming=incoming, outgoing=outgoing)
+                else:
+                    append_to_map(incoming_map=other_connection_incoming, outgoing_map=other_connection_outgoing,
+                                  incoming=0, outgoing=0)
             else:
-                incoming_bytes[time_stamps.index(x_val)] += int(row[1])
-                outgoing_bytes[time_stamps.index(x_val)] += int(row[2])
+                incoming_bytes[time_stamps.index(x_val)] += incoming
+                outgoing_bytes[time_stamps.index(x_val)] += outgoing
+
+                if row[5] == "HTTP":
+                    http_incoming[time_stamps.index(x_val)] += incoming
+                    http_outgoing[time_stamps.index(x_val)] += outgoing
+                elif row[5] == "HTTPS":
+                    https_incoming[time_stamps.index(x_val)] += incoming
+                    https_outgoing[time_stamps.index(x_val)] += outgoing
+
+                if row[6] == "UDP":
+                    udp_incoming[time_stamps.index(x_val)] += incoming
+                    udp_outgoing[time_stamps.index(x_val)] += outgoing
+                elif row[6] == "TCP":
+                    tcp_incoming[time_stamps.index(x_val)] += incoming
+                    tcp_outgoing[time_stamps.index(x_val)] += outgoing
+                elif row[6] == "None":
+                    other_connection_incoming[time_stamps.index(
+                        x_val)] += incoming
+                    other_connection_outgoing[time_stamps.index(
+                        x_val)] += outgoing
 
     print("Done reading in csv file")
     fig = go.Figure()
+
+    print("Adding traces to the figures ...")
     fig.add_trace(go.Scatter(
-        x=time_stamps,  # assign x as the dataframe column 'x'
+        x=time_stamps,
         y=incoming_bytes,
         mode='lines+markers',
-        name='Incoming Bytes'
+        name='Incoming',
     ))
     fig.add_trace(go.Scatter(
-        x=time_stamps,  # assign x as the dataframe column 'x'
+        x=time_stamps,
         y=outgoing_bytes,
         mode='lines+markers',
-        name='Outgoing Bytes'
+        name='Outgoing'
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=udp_incoming,
+        mode='lines+markers',
+        name='UDP Incoming',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=udp_outgoing,
+        mode='lines+markers',
+        name='UDP Outgoing',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=tcp_incoming,
+        mode='lines+markers',
+        name='TCP Incoming',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=tcp_outgoing,
+        mode='lines+markers',
+        name='TCP Outgoing',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=other_connection_incoming,
+        mode='lines+markers',
+        name='Other Connection Protocol Incoming',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=other_connection_outgoing,
+        mode='lines+markers',
+        name='Other Connection Protocol Outgoing',
+        visible="legendonly"
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=http_incoming,
+        mode='lines+markers',
+        name='HTTP Incoming',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=http_outgoing,
+        mode='lines+markers',
+        name='HTTP Outgoing',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=https_incoming,
+        mode='lines+markers',
+        name='HTTPS Incoming',
+        visible="legendonly"
+    ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=https_outgoing,
+        mode='lines+markers',
+        name='HTTPS Outgoing',
+        visible="legendonly"
     ))
 
     fig.update_layout(
         title="Bytes Sent over Time",
-        xaxis_title="Time in Seconds",
-        yaxis_title="Number of Bytes",
+        xaxis_title="Time (s)",
+        yaxis_title="Bytes",
         font=dict(
             family="Helvetica",
             size=18,
@@ -80,7 +222,7 @@ def create_basic_plot():
         )
     )
 
-    print("Converting graph to JSON")
+    print("Converting graph to JSON ...")
     graphJSON = pio.to_json(fig)
     print("Finished converting graph to JSON")
     return graphJSON
