@@ -10,7 +10,8 @@ import pandas as pd
 import threading
 import time
 csv_path = 'csv/'
-graph_update_time = 1  # in seconds
+packetdump_graph_update_time = 1  # in seconds
+userstate_graph_update_time = 0.2  # in seconds
 
 app = Flask(__name__)
 app.secret_key = "asldkfjeori;ngkagieoirgiejgk;lsdgjsoreijw;ralgdkdfilj93852980571qioejfsofgiw984t3qpj;aslkdf"
@@ -85,13 +86,15 @@ def create_basic_plot():
     return graphJSON
 
 
-def get_latest_csv(target, timestamp):
+def get_latest_packetdump_csv(target, timestamp):
     file_name = 'packetdump_' + target + '_' + timestamp + '.csv'
     # wait until PySharkCapture creates file
     while file_name not in listdir(csv_path):
         pass
     return file_name
 
+def get_latest_userstate_csv(target, timestamp):
+    return 'userstate_' + target + '_' + timestamp + '.csv'
 
 @app.route('/chart-data')
 def chart_data():
@@ -110,7 +113,7 @@ def chart_data():
                     incoming_bytes += int(row[1])
                     outgoing_bytes += int(row[2])
                     last_time = row[0]
-                curr_time += graph_update_time
+                curr_time += packetdump_graph_update_time
                 if curr_time != -1:
                     total_bytes = incoming_bytes + outgoing_bytes
                     formatted_time = time.strftime(
@@ -118,15 +121,29 @@ def chart_data():
                     json_data = json.dumps(
                         {'time': formatted_time, 'total_bytes': total_bytes, 'incoming_bytes': incoming_bytes, 'outgoing_bytes': outgoing_bytes})
                     yield f"data:{json_data}\n\n"
-                time.sleep(graph_update_time)
+                time.sleep(packetdump_graph_update_time)
 
     return Response(parse_csv(), mimetype='text/event-stream')
 
 @app.route('/user-state-data')
 def user_state_data():
-    # TODO: stream the User State data (Ex. the user starts/ends speaking to the voice assistant)
+    # stream the User State data (Ex. the user starts/ends speaking to the voice assistant)
     def parse_csv():
-        pass
+        with open(csv_path + app.config['userstate_file'], 'r', O_NONBLOCK) as csv_data_file:
+            while True:
+                csv_reader = csv.reader(csv_data_file)
+                for row in csv_reader:
+                    curr_time = int(row[0])
+                    user_speaking = int(row[1])
+                    formatted_time = time.strftime(
+                        '%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
+                    json_data = json.dumps(
+                        { 'time': formatted_time, 'user_speaking': user_speaking }
+                    )
+                    yield f"data:{json_data}\n\n"
+                    time.sleep(userstate_graph_update_time)
+        
+    return Response(parse_csv(), mimetype='text/event-stream')
 
 @app.route("/")
 def home():
@@ -149,7 +166,8 @@ def run_flask(file, target, stamp):
         if target and stamp:
             app.config['target'] = target
             app.config['timestamp'] = stamp
-            app.config['target_file'] = get_latest_csv(target, stamp)
+            app.config['target_file'] = get_latest_packetdump_csv(target, stamp)
+            app.config['userstate_file'] = get_latest_userstate_csv(target, stamp)
             app.run(debug=False, threaded=True)
         else:
             print(
@@ -173,7 +191,8 @@ if __name__ == "__main__":
         if args.target and args.stamp:
             app.config['target'] = args.target
             app.config['timestamp'] = args.stamp
-            app.config['target_file'] = get_latest_csv(args.target, args.stamp)
+            app.config['target_file'] = get_latest_packetdump_csv(args.target, args.stamp)
+            app.config['userstate_file'] = get_latest_userstate_csv(args.target, args.stamp)
             app.run(debug=True, threaded=True)
         else:
             print("Flask server requires either -f argument or -t and -s arguments")

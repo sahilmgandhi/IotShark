@@ -14,6 +14,8 @@ class UserState():
         curr_path = os.path.dirname(__file__)
         self.output_file_name = "csv/userstate_" + \
             str(target_ip) + "_" + file_timestamp + ".csv"
+        
+        self.write_to_file()  # create file including initial state
 
     def toggle_user_speaking_state(self):
         """

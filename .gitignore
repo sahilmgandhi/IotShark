@@ -1,8 +1,10 @@
 scapy-playground/venv
+venv
 __pycache__
 **/.DS_Store
 pyshark_playground/Eavesdrop_Data.txt
 tools/*.csv
+.vscode
 
 csv/*.csv
 csv/*.json

@@ -40,6 +40,7 @@
                         borderColor: 'rgb(99, 255, 99)',
                         data: [],
                         fill: false,
+                        yAxisID: "y-axis-left"
                     },
                     {
                         label: "Outgoing Bytes",
@@ -47,6 +48,15 @@
                         borderColor: 'rgb(56, 22, 247)',
                         data: [],
                         fill: false,
+                        yAxisID: "y-axis-left"
+                    },
+                    {
+                        label: "Is the User Talking to the Voice Assistant?",
+                        backgroundColor: 'rgb(225, 141, 94)',
+                        borderColor: 'rgb(225, 141, 94)',
+                        data: [],
+                        fill: false,
+                        yAxisID: "y-axis-right"
                     }
                 ],
             },
@@ -76,7 +86,22 @@
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Number of bytes'
+                            labelString: 'Number of bytes',
+                        },
+                        id: 'y-axis-left',
+                        position: 'left'
+                    }, {
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Is the User Talking to the Assistant?',
+                        },
+                        id: 'y-axis-right',
+                        position: 'right',
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 1,
+                            stepSize: 1
                         }
                     }]
                 }
@@ -87,14 +112,27 @@
 
         const lineChart = new Chart(context, config);
 
-        const source = new EventSource("/chart-data");
+        // User States at the current moment
+        let user_speaking = 0;
 
-        source.onmessage = function (event) {
+        // Packetdump Data
+        const source_packetdump = new EventSource("/chart-data");
+
+        source_packetdump.onmessage = function (event) {
             const data = JSON.parse(event.data);
             config.data.labels.push(data.time);
             config.data.datasets[0].data.push(data.incoming_bytes);
             config.data.datasets[1].data.push(data.outgoing_bytes);
+            config.data.datasets[2].data.push(user_speaking);
             lineChart.update();
+        }
+
+        // Userstate Data
+        const source_userstate = new EventSource("/user-state-data");
+    
+        source_userstate.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            user_speaking = data.user_speaking;
         }
     });
 </script>
