@@ -271,7 +271,6 @@ def chart_data():
                 https_incoming_bytes = 0
                 https_outgoing_bytes = 0
 
-                no_new_data = True
                 csv_reader = csv.reader(csv_data_file)
                 for row in csv_reader:
                     if curr_time == -1:
@@ -302,7 +301,6 @@ def chart_data():
                     https_outgoing_bytes += curr_outgoing_bytes if (
                         row[5] == 'HTTPS' and packetDirection(row) == PacketDirection.Outgoing) else 0
 
-                    last_time = row[0]
                 curr_time += packetdump_graph_update_time
                 if curr_time != -1:
                     total_bytes = incoming_bytes + outgoing_bytes
