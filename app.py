@@ -55,14 +55,12 @@ def create_basic_plot():
     https_incoming = []
     https_outgoing = []
 
-    start_time = -1
     with open(app.config['file'], 'r') as csv_data_file:
         print("Reading in csv file")
         csv_reader = csv.reader(csv_data_file)
         for row in csv_reader:
-            if start_time == -1:
-                start_time = int(row[0])
-            x_val = int(row[0]) - start_time
+            x_val = time.strftime(
+                        '%Y-%m-%d %H:%M:%S', time.localtime(int(row[0])))
             incoming = int(row[1])
             outgoing = int(row[2])
 
