@@ -255,6 +255,20 @@ def chart_data():
                 return PacketDirection.Unknown
 
         curr_time = -1
+        cumulative_total_bytes = 0
+        cumulative_incoming_bytes = 0
+        cumulative_outgoing_bytes = 0
+        cumulative_udp_incoming_bytes = 0
+        cumulative_udp_outgoing_bytes = 0
+        cumulative_tcp_incoming_bytes = 0
+        cumulative_tcp_outgoing_bytes = 0
+        cumulative_others_incoming_bytes = 0
+        cumulative_others_outgoing_bytes = 0
+        cumulative_http_incoming_bytes = 0
+        cumulative_http_outgoing_bytes = 0
+        cumulative_https_incoming_bytes = 0
+        cumulative_https_outgoing_bytes = 0
+
         with open(csv_path + app.config['target_file'], 'r', O_NONBLOCK) as csv_data_file:
             while True:
                 total_bytes = 0
@@ -301,6 +315,20 @@ def chart_data():
                     https_outgoing_bytes += curr_outgoing_bytes if (
                         row[5] == 'HTTPS' and packetDirection(row) == PacketDirection.Outgoing) else 0
 
+                cumulative_total_bytes += incoming_bytes + outgoing_bytes
+                cumulative_incoming_bytes += incoming_bytes
+                cumulative_outgoing_bytes += outgoing_bytes
+                cumulative_udp_incoming_bytes += udp_incoming_bytes
+                cumulative_udp_outgoing_bytes += udp_outgoing_bytes
+                cumulative_tcp_incoming_bytes += tcp_incoming_bytes
+                cumulative_tcp_outgoing_bytes += tcp_outgoing_bytes
+                cumulative_others_incoming_bytes += others_incoming_bytes
+                cumulative_others_outgoing_bytes += others_outgoing_bytes
+                cumulative_http_incoming_bytes += http_incoming_bytes
+                cumulative_http_outgoing_bytes += http_outgoing_bytes
+                cumulative_https_incoming_bytes += https_incoming_bytes
+                cumulative_https_outgoing_bytes += https_outgoing_bytes
+
                 curr_time += packetdump_graph_update_time
                 if curr_time != -1:
                     total_bytes = incoming_bytes + outgoing_bytes
@@ -320,7 +348,20 @@ def chart_data():
                         'http_incoming_bytes': http_incoming_bytes,
                         'http_outgoing_bytes': http_outgoing_bytes,
                         'https_incoming_bytes': https_incoming_bytes,
-                        'https_outgoing_bytes': https_outgoing_bytes
+                        'https_outgoing_bytes': https_outgoing_bytes,
+                        'cumulative_total_bytes' : cumulative_total_bytes,
+                        'cumulative_incoming_bytes' : cumulative_incoming_bytes,
+                        'cumulative_outgoing_bytes' : cumulative_outgoing_bytes,
+                        'cumulative_udp_incoming_bytes' : cumulative_udp_incoming_bytes,
+                        'cumulative_udp_outgoing_bytes' : cumulative_udp_outgoing_bytes,
+                        'cumulative_tcp_incoming_bytes' : cumulative_tcp_incoming_bytes,
+                        'cumulative_tcp_outgoing_bytes' : cumulative_tcp_outgoing_bytes,
+                        'cumulative_others_incoming_bytes' : cumulative_others_incoming_bytes,
+                        'cumulative_others_outgoing_bytes' : cumulative_others_outgoing_bytes,
+                        'cumulative_http_incoming_bytes' : cumulative_http_incoming_bytes,
+                        'cumulative_http_outgoing_bytes' : cumulative_http_outgoing_bytes,
+                        'cumulative_https_incoming_bytes' : cumulative_https_incoming_bytes,
+                        'cumulative_https_outgoing_bytes' : cumulative_https_outgoing_bytes
                     })
                     yield f"data:{json_data}\n\n"
                 time.sleep(packetdump_graph_update_time)

@@ -205,6 +205,21 @@ $(document).ready(function () {
         config.data.datasets[11].data.push(data.https_outgoing_bytes);
         config.data.datasets[12].data.push(user_speaking);
         self.lineChart.update();
+
+        document.getElementById('cumulative_total_bytes').innerHTML = data.cumulative_total_bytes;
+        document.getElementById('cumulative_incoming_bytes').innerHTML = data.cumulative_incoming_bytes;
+        document.getElementById('cumulative_outgoing_bytes').innerHTML = data.cumulative_outgoing_bytes;
+        document.getElementById('cumulative_udp_incoming_bytes').innerHTML = data.cumulative_udp_incoming_bytes;
+        document.getElementById('cumulative_udp_outgoing_bytes').innerHTML = data.cumulative_udp_outgoing_bytes;
+        document.getElementById('cumulative_tcp_incoming_bytes').innerHTML = data.cumulative_tcp_incoming_bytes;
+        document.getElementById('cumulative_tcp_outgoing_bytes').innerHTML = data.cumulative_tcp_outgoing_bytes;
+        document.getElementById('cumulative_others_incoming_bytes').innerHTML = data.cumulative_others_incoming_bytes;
+        document.getElementById('cumulative_others_outgoing_bytes').innerHTML = data.cumulative_others_outgoing_bytes;
+        document.getElementById('cumulative_http_incoming_bytes').innerHTML = data.cumulative_http_incoming_bytes;
+        document.getElementById('cumulative_http_outgoing_bytes').innerHTML = data.cumulative_http_outgoing_bytes;
+        document.getElementById('cumulative_https_incoming_bytes').innerHTML = data.cumulative_https_incoming_bytes;
+        document.getElementById('cumulative_https_outgoing_bytes').innerHTML = data.cumulative_https_outgoing_bytes;
+
     }
 
     // Userstate Data
