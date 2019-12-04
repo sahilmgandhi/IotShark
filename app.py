@@ -60,7 +60,7 @@ def create_basic_plot():
         csv_reader = csv.reader(csv_data_file)
         for row in csv_reader:
             x_val = time.strftime(
-                        '%Y-%m-%d %H:%M:%S', time.localtime(int(row[0])))
+                '%Y-%m-%d %H:%M:%S', time.localtime(int(row[0])))
             incoming = int(row[1])
             outgoing = int(row[2])
 
@@ -131,13 +131,13 @@ def create_basic_plot():
         x=time_stamps,
         y=incoming_bytes,
         mode='lines+markers',
-        name='Incoming',
+        name='Overall Incoming',
     ))
     fig.add_trace(go.Scatter(
         x=time_stamps,
         y=outgoing_bytes,
         mode='lines+markers',
-        name='Outgoing'
+        name='Overall Outgoing'
     ))
     fig.add_trace(go.Scatter(
         x=time_stamps,
@@ -235,8 +235,10 @@ def get_latest_packetdump_csv(target, timestamp):
         pass
     return file_name
 
+
 def get_latest_userstate_csv(target, timestamp):
     return 'userstate_' + target + '_' + timestamp + '.csv'
+
 
 @app.route('/chart-data')
 def chart_data():
@@ -245,7 +247,7 @@ def chart_data():
             Incoming = 0
             Outgoing = 1
             Unknown = 2
-        
+
         def packetDirection(row):
             if row[7] == app.config['target']:  # srcip
                 return PacketDirection.Outgoing
@@ -289,7 +291,7 @@ def chart_data():
                 for row in csv_reader:
                     if curr_time == -1:
                         curr_time = int(row[0])
-        
+
                     curr_incoming_bytes = int(row[1])
                     curr_outgoing_bytes = int(row[2])
                     incoming_bytes += curr_incoming_bytes
@@ -335,7 +337,7 @@ def chart_data():
                     formatted_time = time.strftime(
                         '%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
                     json_data = json.dumps({
-                        'time': formatted_time, 
+                        'time': formatted_time,
                         'total_bytes': total_bytes,
                         'incoming_bytes': incoming_bytes,
                         'outgoing_bytes': outgoing_bytes,
@@ -349,24 +351,25 @@ def chart_data():
                         'http_outgoing_bytes': http_outgoing_bytes,
                         'https_incoming_bytes': https_incoming_bytes,
                         'https_outgoing_bytes': https_outgoing_bytes,
-                        'cumulative_total_bytes' : cumulative_total_bytes,
-                        'cumulative_incoming_bytes' : cumulative_incoming_bytes,
-                        'cumulative_outgoing_bytes' : cumulative_outgoing_bytes,
-                        'cumulative_udp_incoming_bytes' : cumulative_udp_incoming_bytes,
-                        'cumulative_udp_outgoing_bytes' : cumulative_udp_outgoing_bytes,
-                        'cumulative_tcp_incoming_bytes' : cumulative_tcp_incoming_bytes,
-                        'cumulative_tcp_outgoing_bytes' : cumulative_tcp_outgoing_bytes,
-                        'cumulative_others_incoming_bytes' : cumulative_others_incoming_bytes,
-                        'cumulative_others_outgoing_bytes' : cumulative_others_outgoing_bytes,
-                        'cumulative_http_incoming_bytes' : cumulative_http_incoming_bytes,
-                        'cumulative_http_outgoing_bytes' : cumulative_http_outgoing_bytes,
-                        'cumulative_https_incoming_bytes' : cumulative_https_incoming_bytes,
-                        'cumulative_https_outgoing_bytes' : cumulative_https_outgoing_bytes
+                        'cumulative_total_bytes': cumulative_total_bytes,
+                        'cumulative_incoming_bytes': cumulative_incoming_bytes,
+                        'cumulative_outgoing_bytes': cumulative_outgoing_bytes,
+                        'cumulative_udp_incoming_bytes': cumulative_udp_incoming_bytes,
+                        'cumulative_udp_outgoing_bytes': cumulative_udp_outgoing_bytes,
+                        'cumulative_tcp_incoming_bytes': cumulative_tcp_incoming_bytes,
+                        'cumulative_tcp_outgoing_bytes': cumulative_tcp_outgoing_bytes,
+                        'cumulative_others_incoming_bytes': cumulative_others_incoming_bytes,
+                        'cumulative_others_outgoing_bytes': cumulative_others_outgoing_bytes,
+                        'cumulative_http_incoming_bytes': cumulative_http_incoming_bytes,
+                        'cumulative_http_outgoing_bytes': cumulative_http_outgoing_bytes,
+                        'cumulative_https_incoming_bytes': cumulative_https_incoming_bytes,
+                        'cumulative_https_outgoing_bytes': cumulative_https_outgoing_bytes
                     })
                     yield f"data:{json_data}\n\n"
                 time.sleep(packetdump_graph_update_time)
 
     return Response(parse_csv(), mimetype='text/event-stream')
+
 
 @app.route('/user-state-data')
 def user_state_data():
@@ -381,12 +384,13 @@ def user_state_data():
                     formatted_time = time.strftime(
                         '%Y-%m-%d %H:%M:%S', time.localtime(curr_time))
                     json_data = json.dumps(
-                        { 'time': formatted_time, 'user_speaking': user_speaking }
+                        {'time': formatted_time, 'user_speaking': user_speaking}
                     )
                     yield f"data:{json_data}\n\n"
                     time.sleep(userstate_graph_update_time)
-        
+
     return Response(parse_csv(), mimetype='text/event-stream')
+
 
 @app.route("/")
 def home():
@@ -409,8 +413,10 @@ def run_flask(file, target, stamp):
         if target and stamp:
             app.config['target'] = target
             app.config['timestamp'] = stamp
-            app.config['target_file'] = get_latest_packetdump_csv(target, stamp)
-            app.config['userstate_file'] = get_latest_userstate_csv(target, stamp)
+            app.config['target_file'] = get_latest_packetdump_csv(
+                target, stamp)
+            app.config['userstate_file'] = get_latest_userstate_csv(
+                target, stamp)
             app.run(debug=False, threaded=True)
         else:
             print(
@@ -434,8 +440,10 @@ if __name__ == "__main__":
         if args.target and args.stamp:
             app.config['target'] = args.target
             app.config['timestamp'] = args.stamp
-            app.config['target_file'] = get_latest_packetdump_csv(args.target, args.stamp)
-            app.config['userstate_file'] = get_latest_userstate_csv(args.target, args.stamp)
+            app.config['target_file'] = get_latest_packetdump_csv(
+                args.target, args.stamp)
+            app.config['userstate_file'] = get_latest_userstate_csv(
+                args.target, args.stamp)
             app.run(debug=True, threaded=True)
         else:
             print("Flask server requires either -f argument or -t and -s arguments")

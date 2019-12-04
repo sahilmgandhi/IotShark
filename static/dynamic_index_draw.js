@@ -4,9 +4,8 @@ $(document).ready(function () {
         type: 'line',
         data: {
             labels: [],
-            datasets: [
-                {
-                    label: "Incoming Bytes",
+            datasets: [{
+                    label: "Overall Incoming Bytes",
                     backgroundColor: 'rgb(99, 255, 99)',
                     borderColor: 'rgb(99, 255, 99)',
                     data: [],
@@ -15,7 +14,7 @@ $(document).ready(function () {
                     hidden: !self.graphSelectorStates['incoming']
                 },
                 {
-                    label: "Outgoing Bytes",
+                    label: "Overall Outgoing Bytes",
                     backgroundColor: 'rgb(56, 22, 247)',
                     borderColor: 'rgb(56, 22, 247)',
                     data: [],
@@ -131,8 +130,8 @@ $(document).ready(function () {
             },
             legend: {
                 labels: {
-                    filter: function(legendItem, chartData) {
-                        return !legendItem.hidden;  // return false to hide the label
+                    filter: function (legendItem, chartData) {
+                        return !legendItem.hidden; // return false to hide the label
                     }
                 }
             },
