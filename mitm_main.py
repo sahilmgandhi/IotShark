@@ -35,6 +35,8 @@ def get_arguments():
                         help="Target IP")
     parser.add_argument("-f", "--file", dest="file",
                         help="CSV file containing captured data")
+    parser.add_argument("-u", "--userstate", dest="userstate",
+                        help="User State file containing user's interaction with the IoT device")
     parser.add_argument("-g", "--gateway", dest="gateway",
                         help="Gateway IP")
     parser.add_argument("-s", "--scan", dest="scan",
@@ -67,7 +69,7 @@ def cleanup():
 
 options = get_arguments()
 if options.file:
-    flask_app = FlaskApp(target_file=options.file,
+    flask_app = FlaskApp(target_file=options.file, userstate_file=options.userstate,
                          target_ip=None, file_timestamp=None)
     flask_app.start()
 
@@ -93,8 +95,8 @@ else:
     pyshark_capture.start()
     user_state = UserState(target, timestamp)
 
-    flask_app = FlaskApp(target_file=None, target_ip=target,
-                         file_timestamp=timestamp)
+    flask_app = FlaskApp(target_file=None, userstate_file=None,
+                         target_ip=target, file_timestamp=timestamp)
     flask_app.start()
 
     try:

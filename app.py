@@ -6,10 +6,12 @@ import csv
 import json
 import plotly.graph_objs as go
 import plotly.io as pio
+from plotly.subplots import make_subplots
 import pandas as pd
 import threading
 import time
 from enum import Enum
+import datetime
 
 csv_path = 'csv/'
 packetdump_graph_update_time = 1  # in seconds
@@ -20,11 +22,12 @@ app.secret_key = "asldkfjeori;ngkagieoirgiejgk;lsdgjsoreijw;ralgdkdfilj938529805
 
 
 class FlaskApp(threading.Thread):
-    def __init__(self, target_file, target_ip, file_timestamp):
+    def __init__(self, target_file, userstate_file, target_ip, file_timestamp):
         threading.Thread.__init__(self)
         self.restore_flag = threading.Event()
 
         self.target_file = target_file
+        self.userstate_file = userstate_file
         self.target_ip = target_ip
         self.file_timestamp = file_timestamp
 
@@ -32,7 +35,7 @@ class FlaskApp(threading.Thread):
         """
         Entrypoint that gets started when the thread is invoked
         """
-        run_flask(self.target_file, self.target_ip, self.file_timestamp)
+        run_flask(self.target_file, self.userstate_file, self.target_ip, self.file_timestamp)
 
 
 def append_to_map(incoming_map, outgoing_map, incoming, outgoing):
@@ -41,7 +44,8 @@ def append_to_map(incoming_map, outgoing_map, incoming, outgoing):
 
 
 def create_basic_plot():
-    time_stamps = []
+    time_stamps = []  # timestamp in formatted string
+    time_stamps_raw = []  # timestamp in Unix Epoch in seconds
     incoming_bytes = []
     outgoing_bytes = []
     udp_outgoing = []
@@ -54,6 +58,7 @@ def create_basic_plot():
     http_outgoing = []
     https_incoming = []
     https_outgoing = []
+    user_speaking = []
 
     with open(app.config['file'], 'r') as csv_data_file:
         print("Reading in csv file")
@@ -66,6 +71,7 @@ def create_basic_plot():
 
             if x_val not in time_stamps:
                 time_stamps.append(x_val)
+                time_stamps_raw.append(int(row[0]))
                 append_to_map(incoming_map=incoming_bytes,
                               outgoing_map=outgoing_bytes, incoming=incoming, outgoing=outgoing)
 
@@ -123,8 +129,27 @@ def create_basic_plot():
                     other_connection_outgoing[time_stamps.index(
                         x_val)] += outgoing
 
+        # add data for graph "Is the User Talking to the Voice Assistant?"
+        if app.config['userstate_file'] is not None:
+            print("Reading in UserState csv file")
+            userstate_data_file = open(app.config['userstate_file'], 'r')
+            csv_reader_userstate = csv.reader(userstate_data_file)
+            userstate_data = [row for row in csv_reader_userstate]
+
+            prev_user_speaking = 0
+            userstate_index = 0
+            for timestamp in time_stamps_raw:
+                if userstate_index >= len(userstate_data):
+                    user_speaking.append(int(userstate_data[-1][1]))
+                    continue
+                if timestamp >= int(userstate_data[userstate_index][0]):
+                    prev_user_speaking = int(userstate_data[userstate_index][1])
+                    userstate_index += 1
+                user_speaking.append(prev_user_speaking)
+
     print("Done reading in csv file")
-    fig = go.Figure()
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.update_yaxes(tick0=0, dtick=1, title_text="Is the User Talking to the Device?", secondary_y=True)
 
     print("Adding traces to the figures ...")
     fig.add_trace(go.Scatter(
@@ -210,6 +235,14 @@ def create_basic_plot():
         name='HTTPS Outgoing',
         visible="legendonly"
     ))
+    fig.add_trace(go.Scatter(
+        x=time_stamps,
+        y=user_speaking,
+        mode='lines',
+        line=dict(color='gray', dash='dash'),
+        name="Is User Talking to the Device?",
+        visible="legendonly",
+    ), secondary_y=True)
 
     fig.update_layout(
         title="Bytes Sent over Time",
@@ -401,9 +434,10 @@ def home():
         return render_template('dynamic_index.html')
 
 
-def run_flask(file, target, stamp):
+def run_flask(file, userstate_file, target, stamp):
     if file:
         app.config['file'] = file
+        app.config['userstate_file'] = userstate_file
         app.run(debug=False, threaded=True)
     else:
         if target and stamp:
