@@ -253,6 +253,9 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmr8t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.bbl
 INPUT /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.bbl
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri8t.tfm
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/times/ptmri8t.vf
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm
 INPUT /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.aux
 INPUT /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.out
 INPUT /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.out

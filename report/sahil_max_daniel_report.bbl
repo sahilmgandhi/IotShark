@@ -1,3 +1,29 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{market_reports}
+Global voice assistant market analysis \& forecast 2017 to 2023.
+
+\bibitem{DBLP:journals/corr/ApthorpeRF17}
+Noah Apthorpe, Dillon Reisman, and Nick Feamster.
+\newblock A smart home is no castle: Privacy vulnerabilities of encrypted iot
+  traffic.
+\newblock {\em CoRR}, abs/1705.06805, 2017.
+
+\bibitem{Diao:2014:YVA:2666620.2666623}
+Wenrui Diao, Xiangyu Liu, Zhe Zhou, and Kehuan Zhang.
+\newblock Your voice assistant is mine: How to abuse speakers to steal
+  information and control your phone.
+\newblock In {\em Proceedings of the 4th ACM Workshop on Security and Privacy
+  in Smartphones \&\#38; Mobile Devices}, SPSM '14, pages 63--74, New York, NY,
+  USA, 2014. ACM.
+
+\bibitem{ghadiry_2017}
+Amir Ghadiry.
+\newblock Is my google home spying on me?, Apr 2017.
+
+\bibitem{morgenstern_morgenstern_2018}
+Maik Morgenstern and Maik Morgenstern.
+\newblock Careless whisper: Does amazon echo send data in silent mode?, Jul
+  2018.
 
 \end{thebibliography}

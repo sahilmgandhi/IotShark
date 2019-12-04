@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  16 NOV 2019 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  4 DEC 2019 15:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -543,25 +543,25 @@ LaTeX Warning: Overwriting file `./sahil_max_daniel_report.bib'.
 (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.aux)
 \openout1 = `sahil_max_daniel_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 33.
-LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 33.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 58.
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 58.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Info: Redefining \microtypecontext on input line 33.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 58.
+LaTeX Font Info:    ... okay on input line 58.
+LaTeX Info: Redefining \microtypecontext on input line 58.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -608,7 +608,7 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \AtBeginShipoutBox=\box46
-Package hyperref Info: Link coloring ON on input line 33.
+Package hyperref Info: Link coloring ON on input line 58.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -616,17 +616,17 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count140
 )
-LaTeX Info: Redefining \ref on input line 33.
-LaTeX Info: Redefining \pageref on input line 33.
-LaTeX Info: Redefining \nameref on input line 33.
+LaTeX Info: Redefining \ref on input line 58.
+LaTeX Info: Redefining \pageref on input line 58.
+LaTeX Info: Redefining \nameref on input line 58.
  (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.out) (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.out)
 \@outlinefile=\write4
 \openout4 = `sahil_max_daniel_report.out'.
 
  ABD: EveryShipout initializing macros
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 49.
-LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 49.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 74.
+LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 74.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
 File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
 )
@@ -634,57 +634,53 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `ptmcm' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 49.
+LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 74.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omlptmcm.fd
 File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+psycm on input line 49.
+LaTeX Font Info:    Try loading font information for OMX+psycm on input line 74.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omxpsycm.fd
 File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 49.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 74.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 49.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 74.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 49.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 74.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 52.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 77.
  [1{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-] (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.bbl
-
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 112.
+] (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.bbl)
 - LAST -
-Extra skip:22.12119pt
-Left:310.0pt/2.16492pt
-Right:289.89981pt/0.14392pt
-Output:310.9499pt
+Extra skip:8.78482pt
+Left:377.04977pt/2.16492pt
+Right:370.32996pt/0.09991pt
+Output:376.68987pt
  [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 112.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 144.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 144.
  (/Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 112.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 112.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 144.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 144.
 Package rerunfilecheck Info: File `sahil_max_daniel_report.out' has not changed.
-(rerunfilecheck)             Checksum: 77C49209CA19BF5ECB284E0A681A1734;411.
+(rerunfilecheck)             Checksum: F9D4C91BD971A9FE89102B318CC413C4;531.
  ) 
 Here is how much of TeX's memory you used:
- 18242 strings out of 492649
- 340656 string characters out of 6129622
- 444030 words of memory out of 5000000
- 21684 multiletter control sequences out of 15000+600000
- 32789 words of font info for 114 fonts, out of 8000000 for 9000
+ 18262 strings out of 492649
+ 341077 string characters out of 6129622
+ 448254 words of memory out of 5000000
+ 21695 multiletter control sequences out of 15000+600000
+ 35929 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,9n,54p,1265b,365s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,9n,54p,1329b,363s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.pdf (2 pages, 50956 bytes).
+Output written on /Users/sahilmgandhi/Desktop/Github/cs219-f19-final-project/report/sahil_max_daniel_report.pdf (2 pages, 56397 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
- 21581 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 89 PDF objects out of 1000 (max. 8388607)
+ 81 compressed objects within 1 object stream
+ 19 named destinations out of 1000 (max. 500000)
+ 25693 words of extra memory for PDF output out of 29859 (max. 10000000)
 
