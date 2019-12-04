@@ -147,9 +147,17 @@ def create_basic_plot():
                     userstate_index += 1
                 user_speaking.append(prev_user_speaking)
 
+        # filter user_speaking datapoints that have value equals 1 only for better visual effects
+        time_stamps_user_speaking = []
+        user_speaking_graph = []
+        for index, timestamp in enumerate(time_stamps):
+            if index < len(user_speaking) and user_speaking[index] > 0:
+                time_stamps_user_speaking.append(timestamp)
+                user_speaking_graph.append(user_speaking[index])
+
     print("Done reading in csv file")
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.update_yaxes(tick0=0, dtick=1, title_text="Is the User Talking to the Device?", secondary_y=True)
+    fig.update_yaxes(tickvals=[0, 1], title_text="Is the User Talking to the Device?", secondary_y=True)
 
     print("Adding traces to the figures ...")
     fig.add_trace(go.Scatter(
@@ -236,10 +244,11 @@ def create_basic_plot():
         visible="legendonly"
     ))
     fig.add_trace(go.Scatter(
-        x=time_stamps,
-        y=user_speaking,
-        mode='lines',
+        x=time_stamps_user_speaking,
+        y=user_speaking_graph,
+        mode='markers',
         line=dict(color='gray', dash='dash'),
+        marker=dict(color='gray', size=5),
         name="Is User Talking to the Device?",
         visible="legendonly",
     ), secondary_y=True)
