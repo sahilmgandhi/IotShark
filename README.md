@@ -1,13 +1,13 @@
 # cs219-f19-final-project
-# DASH: Determine And Secure the House
+# IoTShark
 
 This is our final project for CS 219 for the Fall 2019 quarter. 
 
-DASH is a IOT monitoring service that allows users to monitor their IOT devices for trends in data sent/received.
+IoTShark is a IOT monitoring service that allows users to monitor their IOT devices for trends in data sent/received.
 Ordinarily, setting up a man in the middle attack with proper configurations can take up quite a bit of time, and 
 may seem dauntingly impossible for those with little to no experience in computer security or even computer science.
 
-DASH aims to provide a [nearly] fully automated solution for a user to monitor their IOT devices by simply running 
+IoTShark aims to provide a [nearly] fully automated solution for a user to monitor their IOT devices by simply running 
 a single script. The user merely has to select which device they wish to monitor, and this program takes care of the 
 rest of the heavy work by starting the ARP poisoning, setting up the packet forwarding and the man in the middle 
 packet sniffer. It also has an easy to understand and interactive web UI where a user can filter the packets based on 
