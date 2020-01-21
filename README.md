@@ -19,7 +19,7 @@ huge amounts of data (and we would require many devices and individuals to gathe
 
 # How to run:
 
-1. Install the required libraries: `$pip3 -r requirements.txt`
+1. Install the required libraries: `$pip3 install -r requirements.txt`
 2. Set up the ip forwarding: `$sudo sysctl net.inet.ip.forwarding=1`
 3. Run the app: `sudo python3 mitm_main.py`
 
