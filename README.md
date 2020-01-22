@@ -19,8 +19,8 @@ huge amounts of data (and we would require many devices and individuals to gathe
 
 # How to run:
 
-1. Install the required libraries: `$pip3 install -r requirements.txt`
-2. Set up the ip forwarding: `$sudo sysctl net.inet.ip.forwarding=1`
+1. Install the required libraries: `pip3 install -r requirements.txt`
+2. Set up the ip forwarding: `sudo sysctl net.inet.ip.forwarding=1`
 3. Run the app: `sudo python3 mitm_main.py`
 
 ## The Main Script
@@ -29,7 +29,7 @@ Create a Python virtual envionment and install dependency packages.
 ```sh
 virtualenv --python=`which python3` venv
 source venv/bin/activate
-python -r requirements.txt
+python install -r requirements.txt
 ```
 
 Make sure packet forwarding is enabled on your local machine. This is necessary for man-in-the-middle attack to work. On macOS this can be done with:
