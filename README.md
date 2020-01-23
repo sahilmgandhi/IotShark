@@ -29,7 +29,7 @@ Create a Python virtual envionment and install dependency packages.
 ```sh
 virtualenv --python=`which python3` venv
 source venv/bin/activate
-python install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Make sure packet forwarding is enabled on your local machine. This is necessary for man-in-the-middle attack to work. On macOS this can be done with:
