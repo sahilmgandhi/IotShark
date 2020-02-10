@@ -1,8 +1,8 @@
-from ArpSpoofing import ArpSpoofing
-from DiscoverHosts import select_device
-from PySharkCapture import PySharkCapture
-from StaticCSVAnalysis import StaticCSVAnalysis
-from UserState import UserState
+from src.ArpSpoofing import ArpSpoofing
+from src.DiscoverHosts import select_device
+from src.PySharkCapture import PySharkCapture
+from src.StaticCSVAnalysis import StaticCSVAnalysis
+from src.UserState import UserState
 from subprocess import call, PIPE
 import argparse
 import os
@@ -16,16 +16,16 @@ import keyboard
 """
 Use cases:
 1. Specify the IP of target IoT device and the IP of the gateway router. The script skips scanning hosts and starts ARP poisoning
-    sudo python mitm_main.py -t 192.168.0.215 -g 192.168.0.1
+    sudo python iotshark.py -t 192.168.0.215 -g 192.168.0.1
 
 2. Specify a subnet mask for host scanning and the IP of the gateway router. The script scans the given subnet, prompts the user to select a target device and starts ARP poisoning.
-    sudo python mitm_main.py -s 192.168.0.0/24 -g 192.168.0.1
+    sudo python iotshark.py -s 192.168.0.0/24 -g 192.168.0.1
 
 3. Don't specify anything (like a regular user). The script scans common residential subnets and continues the same way as (2).
-    sudo python mitm_main.py
+    sudo python iotshark.py
 
 4. Specify the path to a csv containing captured data. The script will start the Flask server and output a graph of the data.
-    python mitm_main.py -f csv/packetdump_192.168.1.13_1574744945.csv
+    python iotshark.py -f csv/packetdump_192.168.1.13_1574744945.csv
 """
 
 
@@ -43,6 +43,7 @@ def get_arguments():
                         help="Subnet mask for scanning hosts")
     options = parser.parse_args()
     return options
+
 
 def cleanup():
     """
@@ -66,6 +67,7 @@ def cleanup():
     print("Static analysis finished. Press Ctrl+C again to stop the Flask Server ...")
 
     sys.exit(0)
+
 
 options = get_arguments()
 if options.file:
@@ -100,7 +102,8 @@ else:
     flask_app.start()
 
     try:
-        speaking_button_debouncing = None  # a Unix epoch for the last time the "user speaking button" is pressed
+        # a Unix epoch for the last time the "user speaking button" is pressed
+        speaking_button_debouncing = None
         while True:
             # User can press Space to log his interaction with the voice assistant.
             # Ex. press Space once and begin speaking to Alexa; press it again after finish speaking

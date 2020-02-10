@@ -21,7 +21,7 @@ huge amounts of data (and we would require many devices and individuals to gathe
 
 1. Install the required libraries: `pip3 install -r requirements.txt`
 2. Set up the ip forwarding: `sudo sysctl net.inet.ip.forwarding=1`
-3. Run the app: `sudo python3 mitm_main.py`
+3. Run the app: `sudo python3 iotshark.py`
 
 ## The Main Script
 Create a Python virtual envionment and install dependency packages.
@@ -38,9 +38,9 @@ Make sure packet forwarding is enabled on your local machine. This is necessary 
 sudo sysctl net.inet.ip.forwarding=1
 ```
 
-Run the main program `mitm_main.py`. See that script for accepted options.
+Run the main program `iotshark.py`. See that script for accepted options.
 
-Currently this program does three things:
+Currently this program performs the following 4 actions:
 1. Scan for all hosts either in the given subnet by the `-s` option or a set of common residential subnets
 2. Discover the hardware vendor and OS of each host
 3. Perform ARP poisoning between the selected host and gateway router
